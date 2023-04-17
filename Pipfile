@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pygame = "2.1.2"
+Pillow = "9.2.0"
+
+[dev-packages]
+flake8 = "6.0.0"
+pydocstyle = "6.3.0"
+pylint = "2.17.2"
+
+[requires]
+python_version = "3.10"

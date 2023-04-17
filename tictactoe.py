@@ -2,17 +2,9 @@ import tkinter as tk
 import tkinter.font as tkfont
 import sys
 import os
-import pickle
-import json
-import gettext
 from pathlib import Path
-from typing import Union, Dict, Callable, Optional
+from typing import Dict, Callable
 import pygame as pg
-import start_page as stp
-import setting_page as setp
-import game_page as gap
-import requests
-import socketio
 from PIL import Image, ImageTk
 
 
@@ -83,7 +75,6 @@ class App(tk.Tk):
         self._frame.pack()
 
     def _background_music_mute_unmute(self) -> None:
-        """Method with action for the "Mute/Unmute the background music" button."""
         self.click_music.play()
         if not self.mute_flag:
             self.background_music.set_volume(0)

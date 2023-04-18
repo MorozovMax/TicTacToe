@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Dict
 import pygame as pg
 from PIL import Image, ImageTk
+import authentification_page as ap
 
 
 class App(tk.Tk):
@@ -23,10 +24,17 @@ class App(tk.Tk):
         path1 = self.resource_path("images")
         path2 = self.resource_path("music")
 
+        self.tictactoe_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
+                                                                                      "TicTacToe.png")).resize(
+            (350, 350)))
+
         self._mute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                   "mute.png")).resize((30, 30)))
         self._unmute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                     "unmute.png")).resize((30, 30)))
+
+        self.hide_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1, "hide.png")).resize((20, 20)))
+        self.show_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1, "show.png")).resize((20, 20)))
 
         self.friend_stat: Dict[str, int] = {"drawn_game": 0, "Player1_win": 0, "Player2_win": 0}
         self.pc_stat: Dict[str, int] = {"drawn_game": 0, "Player_win": 0, "Computer_win": 0}
@@ -47,6 +55,8 @@ class App(tk.Tk):
         self._bottom_frame.pack(side='bottom', fill='x', expand=True)
         self._mute_unmute_btn: tk.Button = tk.Button()
         self._mute_unmute_btn_func(self._bottom_frame)
+
+        self.switch_frame(ap.AuthStartPage)
 
     @staticmethod
     def resource_path(relative_path: str) -> str:

@@ -3,7 +3,7 @@ import tkinter.font as tkfont
 import sys
 import os
 from pathlib import Path
-from typing import Dict, Callable
+from typing import Dict
 import pygame as pg
 from PIL import Image, ImageTk
 
@@ -11,8 +11,6 @@ from PIL import Image, ImageTk
 class App(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
-
-        self._: Callable = lambda s: s
 
         self.title("Tic-Tac-Toe")
         self.resizable(False, False)
@@ -25,9 +23,6 @@ class App(tk.Tk):
         path1 = self.resource_path("images")
         path2 = self.resource_path("music")
 
-        self.tictactoe_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
-                                                                                      "TicTacToe.png")).resize((350,
-                                                                                                                350)))
         self._mute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                   "mute.png")).resize((30, 30)))
         self._unmute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,

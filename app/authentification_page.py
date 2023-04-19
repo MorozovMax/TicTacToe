@@ -1,5 +1,6 @@
 import tkinter as tk
 import tictactoe as ttt
+import start_page as stp
 
 
 class AuthStartPage(tk.Frame):
@@ -66,7 +67,7 @@ class RegisterPage(tk.Frame):
             button["image"] = self.master.show_image
 
     def register(self) -> None:
-        pass
+        self.master.switch_frame(AuthStartPage)
 
     def _create_widgets(self) -> None:
         frame0 = tk.Frame(self)
@@ -147,7 +148,7 @@ class LoginPage(tk.Frame):
             button["image"] = self.master.show_image
 
     def login(self) -> None:
-        pass
+        self.master.switch_frame(stp.StartPage)
 
     def _create_widgets(self) -> None:
         frame0 = tk.Frame(self)

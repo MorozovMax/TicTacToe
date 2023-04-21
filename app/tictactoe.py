@@ -7,6 +7,7 @@ from typing import Dict
 import pygame as pg
 from PIL import Image, ImageTk
 import authentification_page as ap
+import start_page as stp
 
 
 class App(tk.Tk):
@@ -47,6 +48,11 @@ class App(tk.Tk):
         self.background_music.set_volume(0.3)
         self.click_music.set_volume(1)
 
+        self.sign: tk.StringVar = tk.StringVar()
+        self.move: tk.IntVar = tk.IntVar()
+        self.sign.set("_")
+        self.move.set(-1)
+
         self.mute_flag: bool = False
 
         self.background_music.play(-1)
@@ -71,6 +77,10 @@ class App(tk.Tk):
     def switch_frame(self, frame_class: type) -> None:
         if self._frame is not None:
             self.click_music.play()
+
+        if isinstance(self._frame, stp.StartPage):
+            self.sign.set("_")
+            self.move.set(-1)
 
         new_frame = frame_class(self)
 

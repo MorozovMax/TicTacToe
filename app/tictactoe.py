@@ -3,7 +3,7 @@ import tkinter.font as tkfont
 import sys
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 import pygame as pg
 from PIL import Image, ImageTk
 import authentification_page as ap
@@ -53,7 +53,17 @@ class App(tk.Tk):
         self.sign.set("_")
         self.move.set(-1)
 
+        self.win_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "win.mp3"))
+        self.win_music.set_volume(0.6)
+        self.defeat_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "defeat.mp3"))
+        self.defeat_music.set_volume(0.2)
+        self.draw_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "draw.wav"))
+        self.draw_music.set_volume(0.3)
+
         self.mute_flag: bool = False
+
+        self.cur_page: Optional[str] = None
+        self.now_game: bool = False
 
         self.background_music.play(-1)
 

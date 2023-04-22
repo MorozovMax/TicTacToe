@@ -1,6 +1,7 @@
 import tkinter as tk
 import start_page as stp
 import tictactoe as ttt
+import game_page as gap
 
 
 class BaseStartPage(tk.Frame):
@@ -199,7 +200,7 @@ class PcStartPage(BaseStartPage):
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
         self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text="Start the game",
-                                 command=lambda: 0, width=30)
+                                 command=lambda: self.master.switch_frame(gap.PcGame), width=30)
         self.button1.pack(side="top", pady=(0, 5))
 
         self.button2 = tk.Button(frame, bg="white", font=self.master.btn_font, text="Return to start page",

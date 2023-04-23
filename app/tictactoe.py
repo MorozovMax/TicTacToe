@@ -48,6 +48,16 @@ class App(tk.Tk):
         self.background_music.set_volume(0.3)
         self.click_music.set_volume(1)
 
+        self.find_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "find.mp3"))
+        self.find_music.set_volume(0.5)
+
+        self.win_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "win.mp3"))
+        self.win_music.set_volume(0.6)
+        self.defeat_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "defeat.mp3"))
+        self.defeat_music.set_volume(0.2)
+        self.draw_music: pg.mixer.Sound = pg.mixer.Sound(Path(path2, "draw.wav"))
+        self.draw_music.set_volume(0.3)
+
         self.sign: tk.StringVar = tk.StringVar()
         self.move: tk.IntVar = tk.IntVar()
         self.sign.set("_")

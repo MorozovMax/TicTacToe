@@ -2,6 +2,7 @@ import tkinter as tk
 import start_page as stp
 import tictactoe as ttt
 import game_page as gap
+import search_game_page as sgp
 
 
 class BaseStartPage(tk.Frame):
@@ -119,7 +120,7 @@ class FriendStartPage(BaseStartPage):
         self.label1.pack(side="top", pady=(10, 0))
 
     def search_game(self) -> None:
-        pass
+        self.master.switch_frame(sgp.SearchGamePage)
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
         self.statistics = tk.LabelFrame(frame, font=self.master.font, text=" Game statistic ", labelanchor="n")

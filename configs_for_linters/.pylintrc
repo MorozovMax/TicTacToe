@@ -1,0 +1,5 @@
+[pycodestyle]
+max-line-length = 120
+
+[pylint.messages_control]
+disable = R0902, E1101, C0415, R0915, W3101, R0913, R0901, W0246, R1705, R0912, R0903, W0613, W4701, W0107

@@ -1,8 +1,11 @@
+import time
 import tkinter as tk
 import tkinter.font as tkfont
 import threading
+from typing import Dict
+import requests
 import setting_page as setp
-import tictactoe as ttt
+import game_page as gp
 
 
 class TimeCounter(tk.Label):
@@ -47,10 +50,8 @@ class CircularWaitingIndicator(tk.Canvas):
 
 
 class SearchGamePage(tk.Frame):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
-
-        self.master: ttt.App
 
         self.master.cur_page = 'Search'
 
@@ -70,9 +71,38 @@ class SearchGamePage(tk.Frame):
         self.thread.start()
 
     def is_searched(self) -> None:
-        pass
+        flag = True
+
+        while flag:
+            if self.reset:
+                break
+
+            url = 'http://localhost:5000/is_game_searched'
+            response = requests.get(url, cookies=self.master.token)
+
+            if response.json()['message'] == 'Game is not searched yet':
+                time.sleep(5)
+                continue
+
+            if response.json()['message'] == 'Success':
+                flag = False
+                self.after(0, lambda: self.game_ready({'message': 'Success', 'opponent': response.json()['opponent'],
+                                                       'game_id': response.json()['game_id']}))
+
+    def game_ready(self, data: Dict[str, str]) -> None:
+        if not self.master.mute_flag:
+            self.master.background_music.set_volume(0)
+        self.master.find_music.play()
+        self.warning_message.config(text='The game is ready')
+        self.button.config(state="disabled")
+
+        self.master.game_id = data['game_id']
+
+        self.after(2600, lambda: self.master.switch_frame(gp.FriendGame))
 
     def reset_search(self) -> None:
+        url = 'http://localhost:5000/reset_search'
+        requests.get(url, cookies=self.master.token)
         self.reset = True
         self.master.switch_frame(setp.FriendStartPage)
 

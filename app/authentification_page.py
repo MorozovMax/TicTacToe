@@ -1,13 +1,13 @@
 import tkinter as tk
-import tictactoe as ttt
+import json
+import pickle
+import requests
 import start_page as stp
 
 
 class AuthStartPage(tk.Frame):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
-
-        self.master: ttt.App
 
         self.configure(height=600, width=550)
         self.pack_propagate(False)
@@ -39,10 +39,8 @@ class AuthStartPage(tk.Frame):
 
 
 class RegisterPage(tk.Frame):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
-
-        self.master: ttt.App
 
         self.configure(height=280, width=800)
         self.pack_propagate(False)
@@ -66,8 +64,23 @@ class RegisterPage(tk.Frame):
             passwd_entry.config(show="*")
             button["image"] = self.master.show_image
 
-    def register(self) -> None:
-        self.master.switch_frame(AuthStartPage)
+    def register(self, username: str, password: str, label: tk.Label, frame: tk.Frame) -> None:
+        if username == '' or password == '':
+            self.master.click_music.play()
+            label.config(text='Username and password can`t be empty')
+            frame.after(1000, lambda: label.config(text=""))
+            return
+
+        url = 'http://localhost:5000/register'
+        headers = {'Content-Type': 'application/json'}
+        data = {'username': username, 'password': password}
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        if response.json()['message'] == 'Username already exists':
+            self.master.click_music.play()
+            label.config(text='Username "{username}" already exists'.format(username=username))
+            frame.after(1000, lambda: label.config(text=""))
+        else:
+            self.master.switch_frame(AuthStartPage)
 
     def _create_widgets(self) -> None:
         frame0 = tk.Frame(self)
@@ -109,7 +122,9 @@ class RegisterPage(tk.Frame):
 
         self.register_button = tk.Button(frame4, bg="white", width=30, font=self.master.btn_font,
                                          text="Register",
-                                         command=lambda: self.register())
+                                         command=lambda: self.register(username_entry.get(),
+                                                                       password_entry.get(),
+                                                                       self.warning_message, frame3))
         self.register_button.pack()
 
         self.button1 = tk.Button(self, bg="white", font=self.master.btn_font,
@@ -119,10 +134,8 @@ class RegisterPage(tk.Frame):
 
 
 class LoginPage(tk.Frame):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
-
-        self.master: ttt.App
 
         self.configure(height=300, width=800)
         self.pack_propagate(False)
@@ -147,8 +160,44 @@ class LoginPage(tk.Frame):
             passwd_entry.config(show="*")
             button["image"] = self.master.show_image
 
-    def login(self) -> None:
-        self.master.switch_frame(stp.StartPage)
+    def login(self, username: str, password: str, remember_me: tk.BooleanVar, label: tk.Label,
+              frame: tk.Frame) -> None:
+        if username == '' or password == '':
+            self.master.click_music.play()
+            label.config(text='Username and password can`t be empty')
+            frame.after(1000, lambda: label.config(text=""))
+            return
+
+        url = 'http://localhost:5000/login'
+        headers = {'Content-Type': 'application/json'}
+        data = {'username': username, 'password': password}
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+
+        if response.json()['message'] == 'Invalid username or password':
+            self.master.click_music.play()
+            label.config(text='Invalid username or password')
+            frame.after(1000, lambda: label.config(text=""))
+        elif response.json()['message'] == 'Error':
+            self.master.click_music.play()
+            label.config(text='{username} already logged in'.format(username=username))
+            frame.after(1000, lambda: label.config(text=""))
+        else:
+            self.master.token = response.cookies
+            self.master.user_id = response.json()['user_id']
+            if remember_me.get():
+                with open(self.master.resource_path('token.pickle', 'wb')) as file:
+                    pickle.dump(self.master.token, file)
+
+                self.master.remember_login = True
+
+            self.master.user = username
+            self.master.pc_stat['drawn_game'] = response.json()['pc_stat']['drawn_game']
+            self.master.pc_stat['Player_win'] = response.json()['pc_stat']['Player_win']
+            self.master.pc_stat['Computer_win'] = response.json()['pc_stat']['Computer_win']
+            self.master.friend_stat['drawn_game'] = response.json()['friend_stat']['drawn_game']
+            self.master.friend_stat['Player1_win'] = response.json()['friend_stat']['Player1_win']
+            self.master.friend_stat['Player2_win'] = response.json()['friend_stat']['Player2_win']
+            self.master.switch_frame(stp.StartPage)
 
     def _create_widgets(self) -> None:
         frame0 = tk.Frame(self)
@@ -198,7 +247,8 @@ class LoginPage(tk.Frame):
         frame4.pack(side="top", pady=(0, 5))
 
         self.register_button = tk.Button(frame4, bg="white", width=30, font=self.master.btn_font, text="Log in",
-                                         command=lambda: self.login())
+                                         command=lambda: self.login(username_entry.get(), password_entry.get(),
+                                                                    remember_me_var, self.warning_message, frame3))
         self.register_button.pack()
 
         self.button1 = tk.Button(self, bg="white", font=self.master.btn_font,

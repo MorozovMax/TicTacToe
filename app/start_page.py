@@ -1,13 +1,13 @@
 import tkinter as tk
-import tictactoe as ttt
+import os
+import requests
+import setting_page as setp
 import authentification_page as ap
 
 
 class StartPage(tk.Frame):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
-
-        self.master: ttt.App
 
         self.configure(height=650, width=550)
         self.pack_propagate(False)
@@ -27,11 +27,11 @@ class StartPage(tk.Frame):
         self._create_image()
 
         self.button1 = tk.Button(self, bg="white", font=self.master.btn_font, text="Online game", width=30,
-                                 command=lambda: 0)
+                                 command=lambda: self.master.switch_frame(setp.FriendStartPage))
         self.button1.pack(side="top", pady=(40, 5))
 
         self.button2 = tk.Button(self, bg="white", font=self.master.btn_font, text="Play with the computer",
-                                 width=30, command=lambda: 0)
+                                 width=30, command=lambda: self.master.switch_frame(setp.PcStartPage))
         self.button2.pack(side="top", pady=(0, 5))
 
         self.button3 = tk.Button(self, bg="white", font=self.master.btn_font, text="Log Out", width=30,
@@ -39,6 +39,13 @@ class StartPage(tk.Frame):
         self.button3.pack(side='top')
 
     def _logout(self) -> None:
+        url = 'http://localhost:5000/logout'
+        requests.get(url, cookies=self.master.token)
+        self.master.token = None
+        try:
+            os.remove(self.master.resource_path('token.pickle'))
+        except OSError:
+            pass
         self.master.switch_frame(ap.AuthStartPage)
 
     def _create_image(self) -> None:

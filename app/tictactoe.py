@@ -1,3 +1,9 @@
+"""
+A module with the main class of the game application.
+Also, the application is launched in this module, and the necessary
+actions are performed after closing the application.
+"""
+
 import tkinter as tk
 import tkinter.font as tkfont
 import sys
@@ -17,7 +23,10 @@ import game_page as gap
 
 
 class App(tk.Tk):
+    """The main class of the game application."""
+
     def __init__(self) -> None:
+        """Constructor method."""
         super().__init__()
 
         self.title("Tic-Tac-Toe")
@@ -112,15 +121,35 @@ class App(tk.Tk):
 
     @staticmethod
     def resource_path(relative_path: str) -> str:
+        """
+                Method for getting the full path to a file or directory.
+
+                :param relative_path: Relative path to a file or directory
+                :type relative_path: class: `str`
+                :return: The full path to a file or directory
+                :rtype: class: `str`
+                """
         base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
         return os.path.join(base_path, relative_path)
 
     def _mute_unmute_btn_func(self, frame: tk.Frame) -> None:
+        """
+               Method of rendering the "Mute/Unmute the background music" button.
+
+               :param frame: Frame for rendering the "Mute/Unmute the background music" button
+               :type frame: class: `tkinter.Frame`
+               """
         self._mute_unmute_btn = tk.Button(frame, background="white", image=self._unmute_image,
                                           command=self._background_music_mute_unmute)
         self._mute_unmute_btn.pack(side="left", anchor="sw", padx=10, pady=10)
 
     def switch_frame(self, frame_class: type) -> None:
+        """
+                Page change method.
+
+                :param frame_class: The class of any of the game pages
+                :type frame_class: class: `type`
+                """
         if (self._frame is not None) and (frame_class != gap.FriendGame):
             self.click_music.play()
 
@@ -137,6 +166,7 @@ class App(tk.Tk):
         self._frame.pack()
 
     def _background_music_mute_unmute(self) -> None:
+        """Method with action for the "Mute/Unmute the background music" button."""
         self.click_music.play()
         if not self.mute_flag:
             self.background_music.set_volume(0)

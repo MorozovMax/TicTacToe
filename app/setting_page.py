@@ -1,15 +1,14 @@
 import tkinter as tk
+import json
+import requests
 import start_page as stp
-import tictactoe as ttt
 import game_page as gap
 import search_game_page as sgp
 
 
 class BaseStartPage(tk.Frame):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
-
-        self.master: ttt.App
 
         self.configure(height=280, width=800)
         self.pack_propagate(False)
@@ -112,7 +111,7 @@ class BaseStartPage(tk.Frame):
 
 
 class FriendStartPage(BaseStartPage):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
 
     def _game_type(self) -> None:
@@ -120,6 +119,10 @@ class FriendStartPage(BaseStartPage):
         self.label1.pack(side="top", pady=(10, 0))
 
     def search_game(self) -> None:
+        url = 'http://localhost:5000/join_queue'
+        headers = {'Content-Type': 'application/json'}
+        data = {'sign': self.master.sign.get(), 'turn': str(self.master.move.get())}
+        requests.post(url, headers=headers, data=json.dumps(data), cookies=self.master.token)
         self.master.switch_frame(sgp.SearchGamePage)
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
@@ -163,7 +166,7 @@ class FriendStartPage(BaseStartPage):
 
 
 class PcStartPage(BaseStartPage):
-    def __init__(self, master: ttt.App) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
 
     def _game_type(self) -> None:

@@ -1,3 +1,8 @@
+"""
+A module with a parent class of game settings page, as well as classes of online game
+settings page and computer game settings page inherited from it.
+"""
+
 import tkinter as tk
 import json
 import requests
@@ -7,7 +12,15 @@ import search_game_page as sgp
 
 
 class BaseStartPage(tk.Frame):
+    """
+        The class of the registration page.
+
+        :param master: An instance of the main class of the game application
+        :type master: class: `tictactoe.App`
+        """
+
     def __init__(self, master) -> None:
+        """Constructor method."""
         super().__init__(master)
 
         self.configure(height=280, width=800)
@@ -33,9 +46,16 @@ class BaseStartPage(tk.Frame):
         self._create_widgets()
 
     def _sound(self) -> None:
+        """Method for playing the sound of pressing the button."""
         self.master.click_music.play(0)
 
     def _choose_move_widget(self, frame: tk.Frame) -> None:
+        """
+                A method for drawing a named frame with a choice of the sequence of the move.
+
+                :param frame: A frame for drawing a named frame with a choice of the sequence of the move
+                :type frame: class: `tkinter.Frame`
+                """
         self.step_choice = tk.LabelFrame(frame, font=self.master.font,
                                          text=" Choosing a move ", labelanchor="n")
         self.step_choice.pack(side="left", padx=(0, 12), anchor="nw")
@@ -61,6 +81,12 @@ class BaseStartPage(tk.Frame):
         self.step_choice3.pack(side="top", pady=(4, 14), padx=5)
 
     def _sign_selection(self, frame: tk.Frame) -> None:
+        """
+               Method for drawing a named frame with a sign selection.
+
+               :param frame: Frame for drawing a named frame with a choice of sign
+               :type frame: class: `tkinter.Frame`
+               """
         self.sign_selection = tk.LabelFrame(frame, font=self.master.font,
                                             text=" Sign selection ", labelanchor="n")
         self.sign_selection.pack(side="left", padx=(0, 12), anchor="nw")
@@ -86,15 +112,29 @@ class BaseStartPage(tk.Frame):
         self.sign_selection3.pack(side="top", pady=(4, 14), padx=5)
 
     def _game_type(self) -> None:
+        """Method for drawing a label with a game type."""
         pass
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
+        """
+                A method for drawing the start game and return to the start page buttons.
+
+                :param frame: Frame for drawing the start game and return to the start page buttons
+                :type frame: class: `tkinter.Frame`
+                """
         pass
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
+        """
+               Method for rendering a label frame with statistics.
+
+               :param frame: Frame for drawing a label frame with statistics
+               :type frame: class: `tkinter.Frame`
+               """
         pass
 
     def _create_widgets(self) -> None:
+        """The method of rendering widgets of the game settings page."""
         self._game_type()
 
         frame1 = tk.Frame(self)
@@ -111,14 +151,24 @@ class BaseStartPage(tk.Frame):
 
 
 class FriendStartPage(BaseStartPage):
+    """
+       The class of the registration page.
+
+       :param master: An instance of the main class of the game application
+       :type master: class: `tictactoe.App`
+       """
+
     def __init__(self, master) -> None:
+        """Constructor method."""
         super().__init__(master)
 
     def _game_type(self) -> None:
+        """Method for drawing a label with the online game type."""
         self.label1 = tk.Label(self, font=self.master.font, text="Online game")
         self.label1.pack(side="top", pady=(10, 0))
 
     def search_game(self) -> None:
+        """A method with an action for the "Search the game" button."""
         url = 'http://localhost:5000/join_queue'
         headers = {'Content-Type': 'application/json'}
         data = {'sign': self.master.sign.get(), 'turn': str(self.master.move.get())}
@@ -126,6 +176,12 @@ class FriendStartPage(BaseStartPage):
         self.master.switch_frame(sgp.SearchGamePage)
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
+        """
+               Method for rendering a label frame with online game statistics.
+
+               :param frame: Frame for drawing a label frame with online game statistics
+               :type frame: class: `tkinter.Frame`
+               """
         self.statistics = tk.LabelFrame(frame, font=self.master.font, text=" Game statistic ", labelanchor="n")
         self.statistics.pack(side="left", padx=12, anchor="nw")
         self.statistics1 = tk.Label(self.statistics, font=self.master.btn_font, bg="white",
@@ -156,6 +212,12 @@ class FriendStartPage(BaseStartPage):
         self.statistics4.pack(side="top", pady=(0, 8), padx=5)
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
+        """
+               A method for drawing the search the game and return to the start page buttons.
+
+               :param frame: Frame for drawing the search the game and return to the start page buttons
+               :type frame: class: `tkinter.Frame`
+               """
         self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text="Search the game",
                                  command=self.search_game, width=30)
         self.button1.pack(side="top", pady=(0, 5))
@@ -166,14 +228,29 @@ class FriendStartPage(BaseStartPage):
 
 
 class PcStartPage(BaseStartPage):
+    """
+        The class of the registration page.
+
+        :param master: An instance of the main class of the game application
+        :type master: class: `tictactoe.App`
+        """
+
     def __init__(self, master) -> None:
+        """Constructor method."""
         super().__init__(master)
 
     def _game_type(self) -> None:
+        """Method for drawing a label with the computer game type."""
         self.label1 = tk.Label(self, font=self.master.font, text="Game with computer")
         self.label1.pack(side="top", pady=(10, 0))
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
+        """
+               Method for rendering a label frame with computer game statistics.
+
+               :param frame: Frame for drawing a label frame with computer game statistics
+               :type frame: class: `tkinter.Frame`
+               """
         self.statistics = tk.LabelFrame(frame, font=self.master.font, text=" Game statistic ", labelanchor="n")
         self.statistics.pack(side="left", padx=12, anchor="nw")
         self.statistics1 = tk.Label(self.statistics, font=self.master.btn_font, bg="white",
@@ -203,6 +280,12 @@ class PcStartPage(BaseStartPage):
         self.statistics4.pack(side="top", pady=(0, 8), padx=5)
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
+        """
+               A method for drawing the start computer game and return to the start page buttons.
+
+               :param frame: Frame for drawing the start computer game and return to the start page buttons
+               :type frame: class: `tkinter.Frame`
+               """
         self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text="Start the game",
                                  command=lambda: self.master.switch_frame(gap.PcGame), width=30)
         self.button1.pack(side="top", pady=(0, 5))

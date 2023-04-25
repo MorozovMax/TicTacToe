@@ -1,3 +1,5 @@
+"""Server for online game."""
+
 import uuid
 import os
 import threading
@@ -25,6 +27,8 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
+    """User class for use in SQLAlchemy."""
+
     id = db.Column(db.String(36), primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
@@ -33,6 +37,8 @@ class User(db.Model):
 
 
 class ComputerGameStat(db.Model):
+    """Computer game statistics class for use in SQLAlchemy."""
+
     id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False, primary_key=True)
     games_played = db.Column(db.Integer, default=0, nullable=False)
     games_won = db.Column(db.Integer, default=0, nullable=False)
@@ -41,6 +47,8 @@ class ComputerGameStat(db.Model):
 
 
 class OnlineGameStat(db.Model):
+    """Online game statistics class for use in SQLAlchemy."""
+
     id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False, primary_key=True)
     games_played = db.Column(db.Integer, default=0, nullable=False)
     games_won = db.Column(db.Integer, default=0, nullable=False)
@@ -49,10 +57,28 @@ class OnlineGameStat(db.Model):
 
 
 def hash_password(password: str) -> str:
+    """
+        Function for hashing password.
+
+        :param password: User password
+        :type password: class `str`
+        :return: Hashed password
+        :rtype: class: `str`
+        """
     return hashlib.sha256(password.encode()).hexdigest()
 
 
 def create_user(username: str, password: str) -> str:
+    """
+        Function for creating a user profile.
+
+        :param username: User username
+        :type username: class: `str`
+        :param password: User password
+        :type password: class `str`
+        :return: Id of user
+        :rtype: class: `str`
+        """
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
         raise ValueError('Username already exists')
@@ -70,6 +96,16 @@ def create_user(username: str, password: str) -> str:
 
 
 def authenticate_user(username: str, password: str) -> Optional[str]:
+    """
+        A function for verifying the existence of a user.
+
+        :param username: User username
+        :type username: class: `str`
+        :param password: User password
+        :type password: class `str`
+        :return: Id of user or None
+        :rtype: class: `str` or None
+        """
     hashed_password = hash_password(password)
     user = User.query.filter_by(username=username, password=hashed_password).first()
     if user:
@@ -85,6 +121,7 @@ sessions: List[str] = []
 
 
 def start_game() -> None:
+    """A function that selects two players in a separate thread to start the game."""
     while True:
         length = len(waiting_players)
 
@@ -131,6 +168,12 @@ t.start()
 
 @app.route('/login', methods=['POST'])
 def login() -> flask.Response:
+    """
+        A function that authorizes the user in the game.
+
+        :return: Server response
+        :rtype: class: `flask.Response`
+        """
     data = request.get_json()
     username = data['username']
     password = data['password']
@@ -162,6 +205,12 @@ def login() -> flask.Response:
 
 @app.route('/logout', methods=['GET'])
 def logout() -> flask.Response:
+    """
+        A function that logs the user out of the game.
+
+        :return: Server response
+        :rtype: class: `flask.Response`
+        """
     sessions.remove(session['user_id'])
     session.pop('user_id', None)
     response = make_response(jsonify({'message': 'Logout successful'}))
@@ -171,6 +220,12 @@ def logout() -> flask.Response:
 
 @app.route('/', methods=['GET'])
 def index() -> flask.Response:
+    """
+       A function that sends the necessary data to the user when launching the client with the game.
+
+       :return: Server response
+       :rtype: class: `flask.Response`
+       """
     data = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     session['user_id'] = data['user_id']
     user = User.query.filter_by(id=data['user_id']).first()
@@ -187,6 +242,12 @@ def index() -> flask.Response:
 
 @app.route('/register', methods=['POST'])
 def register() -> flask.Response:
+    """
+       A function that registers a user.
+
+       :return: Server response
+       :rtype: class: `flask.Response`
+       """
     data = request.get_json()
     username = data['username']
     password = data['password']
@@ -200,6 +261,12 @@ def register() -> flask.Response:
 
 @app.route('/update_computer_statistic', methods=['POST'])
 def update_computer_statistic() -> flask.Response:
+    """
+        A function that updates statistics of computer games of user.
+
+        :return: Server response
+        :rtype: class: `flask.Response`
+        """
     token = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     user_id = token['user_id']
     data = request.get_json()
@@ -222,6 +289,12 @@ def update_computer_statistic() -> flask.Response:
 
 @app.route('/update_friend_statistic', methods=['POST'])
 def update_friend_statistic() -> flask.Response:
+    """
+      A function that updates statistics of online games of user.
+
+      :return: Server response
+      :rtype: class: `flask.Response`
+      """
     token = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     user_id = token['user_id']
     data = request.get_json()
@@ -244,6 +317,12 @@ def update_friend_statistic() -> flask.Response:
 
 @app.route('/reset_search', methods=['GET'])
 def reset_search() -> flask.Response:
+    """
+       The function that reset the game search.
+
+       :return: Server response
+       :rtype: class: `flask.Response`
+       """
     token = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     user_id = token['user_id']
     for elem in waiting_players:
@@ -256,6 +335,7 @@ def reset_search() -> flask.Response:
 
 @socketio.on('connect')
 def on_connect(*args) -> None:
+    """The function of connecting to the game by the user."""
     headers = request.headers
     game_id = headers.get('Game-Id')
     user_id = headers.get('User-Id')
@@ -280,6 +360,13 @@ def on_connect(*args) -> None:
 
 @socketio.on('check_opponent')
 def check_opponent(data: Dict[str, str]) -> None:
+    """
+        A function that checks if the opponent is in the game and either tells the user that
+        it is possible to start the game, or tells the user that the opponent reset the game.
+
+        :param data: Dictionary with game parameters
+        :type data: class: `dict[str, str]`
+        """
     game_id = data['game_id']
     user_id = data['user_id']
     opponent_id = data['opponent_id']
@@ -292,6 +379,12 @@ def check_opponent(data: Dict[str, str]) -> None:
 
 @socketio.on('play')
 def on_play(data: Dict[str, Union[str, int]]) -> None:
+    """
+      A function that informs the opponent about the user's progress.
+
+      :param data: Dictionary with game parameters
+      :type data: class: `dict[str, str | int]`
+      """
     game_id = data['game_id']
     pos = data['pos']
     user_id = data['user_id']
@@ -307,6 +400,12 @@ def on_play(data: Dict[str, Union[str, int]]) -> None:
 
 @socketio.on('leave')
 def leave(data: Dict[str, str]) -> None:
+    """
+       The function of exiting the game at the end of it.
+
+       :param data: Dictionary with game parameters
+       :type data: class: `dict[str, str]`
+       """
     game_id = data['game_id']
     user_id = data['user_id']
     if len(socketio.server.manager.rooms['/'][game_id]) == 1:
@@ -319,6 +418,12 @@ def leave(data: Dict[str, str]) -> None:
 
 @socketio.on('game_over')
 def game_over(data: Dict[str, Union[str, bool, int]]) -> None:
+    """
+       A function that tells the opponent that the game is over.
+
+       :param data: Dictionary with game parameters
+       :type data: class: `dict[str, str | bool | int]`
+       """
     game_id = data['game_id']
     is_draw = data['is_draw']
     opponent_id = data['opponent_id']
@@ -336,6 +441,12 @@ def game_over(data: Dict[str, Union[str, bool, int]]) -> None:
 
 @socketio.on('reset_game')
 def reset_game(data: Dict[str, str]) -> None:
+    """
+        Function, cancellation of the game by the user.
+
+        :param data: Dictionary with game parameters
+        :type data: class: `dict[str, str]`
+        """
     game_id = data['game_id']
     user_id = data['user_id']
     opponent_id = data['opponent_id']
@@ -349,6 +460,12 @@ def reset_game(data: Dict[str, str]) -> None:
 
 @app.route('/is_game_searched', methods=['GET'])
 def is_game_searched() -> flask.Response:
+    """
+       A function that tells if a game has been found for the user.
+
+       :return: Server response
+       :rtype: class: `flask.Response`
+       """
     data = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     user_id = data['user_id']
 
@@ -370,6 +487,12 @@ def is_game_searched() -> flask.Response:
 
 @app.route('/join_queue', methods=['POST'])
 def join_queue() -> flask.Response:
+    """
+       A function that adds a user to the list of users who are looking for a game.
+
+       :return: Server response
+       :rtype: class: `flask.Response`
+       """
     token = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     user_id = token['user_id']
     data = request.get_json()

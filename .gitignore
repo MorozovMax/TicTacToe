@@ -1,0 +1,7 @@
+requirements.txt
+*.pot
+*.mo
+build
+__pycache__
+_templates
+_build

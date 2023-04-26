@@ -23,7 +23,10 @@ import search_game_page as sgp
 import game_page as gap
 
 
-translation = gettext.translation('tictactoe', 'locale', fallback=True)
+translation = gettext.translation('tictactoe',
+                                  os.path.join(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))),
+                                               'locale'),
+                                  fallback=True)
 
 
 class App(tk.Tk):
@@ -54,7 +57,7 @@ class App(tk.Tk):
         self._mute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                   "mute.png")).resize((30, 30)))
         self._unmute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
-                                                                             "unmute.png")).resize((30, 30)))
+                                                                                    "unmute.png")).resize((30, 30)))
 
         self._en_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                 "EN.png")).resize((30, 30)))
@@ -137,23 +140,23 @@ class App(tk.Tk):
     @staticmethod
     def resource_path(relative_path: str) -> str:
         """
-                Method for getting the full path to a file or directory.
+        Method for getting the full path to a file or directory.
 
-                :param relative_path: Relative path to a file or directory
-                :type relative_path: class: `str`
-                :return: The full path to a file or directory
-                :rtype: class: `str`
-                """
+        :param relative_path: Relative path to a file or directory
+        :type relative_path: class: `str`
+        :return: The full path to a file or directory
+        :rtype: class: `str`
+        """
         base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
         return os.path.join(base_path, relative_path)
 
     def _mute_unmute_btn_func(self, frame: tk.Frame) -> None:
         """
-               Method of rendering the "Mute/Unmute the background music" button.
+        Method of rendering the "Mute/Unmute the background music" button.
 
-               :param frame: Frame for rendering the "Mute/Unmute the background music" button
-               :type frame: class: `tkinter.Frame`
-               """
+        :param frame: Frame for rendering the "Mute/Unmute the background music" button
+        :type frame: class: `tkinter.Frame`
+        """
         self._mute_unmute_btn = tk.Button(frame, background="white", image=self._unmute_image,
                                           command=self._background_music_mute_unmute)
         self._mute_unmute_btn.pack(side="left", anchor="sw", padx=10, pady=10)
@@ -171,11 +174,11 @@ class App(tk.Tk):
 
     def switch_frame(self, frame_class: type) -> None:
         """
-                Page change method.
+        Page change method.
 
-                :param frame_class: The class of any of the game pages
-                :type frame_class: class: `type`
-                """
+        :param frame_class: The class of any of the game pages
+        :type frame_class: class: `type`
+        """
         if (self._frame is not None) and (frame_class != gap.FriendGame):
             self.click_music.play()
 

@@ -2,22 +2,27 @@
 
 import tkinter as tk
 import os
+import sys
 import gettext
 from typing import Callable
 import requests
 import setting_page as setp
 import authentification_page as ap
 
-translation = gettext.translation('tictactoe', 'locale', fallback=True)
+
+translation = gettext.translation('tictactoe',
+                                  os.path.join(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))),
+                                               'locale'),
+                                  fallback=True)
 
 
 class StartPage(tk.Frame):
     """
-        The class of the game's home page, where you can choose the game mode or log out of your account.
+    The class of the game's home page, where you can choose the game mode or log out of your account.
 
-        :param master: An instance of the main class of the game application
-        :type master: class: `tictactoe.App`
-        """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
         """The constructor method."""

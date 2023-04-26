@@ -1,6 +1,8 @@
 """Module with the authorization page class, as well as with the registration and login page classes."""
 
 import tkinter as tk
+import os
+import sys
 import json
 import pickle
 import gettext
@@ -9,16 +11,19 @@ import requests
 import start_page as stp
 
 
-translation = gettext.translation('tictactoe', 'locale', fallback=True)
+translation = gettext.translation('tictactoe',
+                                  os.path.join(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))),
+                                               'locale'),
+                                  fallback=True)
 
 
 class AuthStartPage(tk.Frame):
     """
-       The class of the authorization page where you can choose to register or log in.
+    The class of the authorization page where you can choose to register or log in.
 
-       :param master: An instance of the main class of the game application
-       :type master: class: `tictactoe.App`
-       """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
         """Constructor method."""
@@ -79,11 +84,11 @@ class AuthStartPage(tk.Frame):
 
 class RegisterPage(tk.Frame):
     """
-        The class of the registration page.
+    The class of the registration page.
 
-        :param master: An instance of the main class of the game application
-        :type master: class: `tictactoe.App`
-        """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
         """Constructor method."""
@@ -108,13 +113,13 @@ class RegisterPage(tk.Frame):
 
     def toggle_password_visibility(self, passwd_entry: tk.Entry, button: tk.Button) -> None:
         """
-               Method with action for the button "Show/Hide password".
+        Method with action for the button "Show/Hide password".
 
-               :param passwd_entry: An object with a password entry field
-               :type passwd_entry: class: `tkinter.Entry`
-               :param button: Object with a button "Show/Hide password"
-               :type button: class: `tkinter.Button`
-               """
+        :param passwd_entry: An object with a password entry field
+        :type passwd_entry: class: `tkinter.Entry`
+        :param button: Object with a button "Show/Hide password"
+        :type button: class: `tkinter.Button`
+        """
         self.master.click_music.play()
         current_value = passwd_entry["show"]
         if current_value == "*":
@@ -126,17 +131,17 @@ class RegisterPage(tk.Frame):
 
     def register(self, username: str, password: str, label: tk.Label, frame: tk.Frame) -> None:
         """
-                Method with action for the "Register" button.
+        Method with action for the "Register" button.
 
-                :param username: The name of the user you want to register under
-                :type username: class: `str`
-                :param password: The password you want to set for username
-                :type password: class: `str`
-                :param label: A label with an information message
-                :type label: class: `tkinter.Label`
-                :param frame: The frame in which the "Register" button will be drawn
-                :type frame: class: `tkinter.Frame`
-                """
+        :param username: The name of the user you want to register under
+        :type username: class: `str`
+        :param password: The password you want to set for username
+        :type password: class: `str`
+        :param label: A label with an information message
+        :type label: class: `tkinter.Label`
+        :param frame: The frame in which the "Register" button will be drawn
+        :type frame: class: `tkinter.Frame`
+        """
         if username == '' or password == '':
             self.master.click_music.play()
             label.config(text=self._('Username and password can`t be empty'))
@@ -224,13 +229,14 @@ class RegisterPage(tk.Frame):
         self.register_button.config(text=self._("Register"))
         self.button1.config(text=self._("Return to authorization page"))
 
+
 class LoginPage(tk.Frame):
     """
-       The class of the login page.
+    The class of the login page.
 
-       :param master: An instance of the main class of the game application
-       :type master: class: `tictactoe.App`
-       """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
         """Constructor method."""
@@ -256,13 +262,13 @@ class LoginPage(tk.Frame):
 
     def toggle_password_visibility(self, passwd_entry: tk.Entry, button: tk.Button) -> None:
         """
-               Method with action for the button "Show/Hide password".
+        Method with action for the button "Show/Hide password".
 
-               :param passwd_entry: An object with a password entry field
-               :type passwd_entry: class: `tkinter.Entry`
-               :param button: Object with a button "Show/Hide password"
-               :type button: class: `tkinter.Button`
-               """
+        :param passwd_entry: An object with a password entry field
+        :type passwd_entry: class: `tkinter.Entry`
+        :param button: Object with a button "Show/Hide password"
+        :type button: class: `tkinter.Button`
+        """
         self.master.click_music.play()
         current_value = passwd_entry["show"]
         if current_value == "*":
@@ -275,19 +281,19 @@ class LoginPage(tk.Frame):
     def login(self, username: str, password: str, remember_me: tk.BooleanVar, label: tk.Label,
               frame: tk.Frame) -> None:
         """
-               Method with action for the "Log in" button.
+        Method with action for the "Log in" button.
 
-               :param username: The name of the user you want to log in under
-               :type username: class: `str`
-               :param password: The password for username
-               :type password: class: `str`
-               :param remember_me: The meaning of the "Remember me" flag
-               :type remember_me: class: `tkinter.BooleanVar`
-               :param label: A label with an information message
-               :type label: class: `tkinter.Label`
-               :param frame: The frame in which the "Log in" button will be drawn
-               :type frame: class: `tkinter.Frame`
-               """
+        :param username: The name of the user you want to log in under
+        :type username: class: `str`
+        :param password: The password for username
+        :type password: class: `str`
+        :param remember_me: The meaning of the "Remember me" flag
+        :type remember_me: class: `tkinter.BooleanVar`
+        :param label: A label with an information message
+        :type label: class: `tkinter.Label`
+        :param frame: The frame in which the "Log in" button will be drawn
+        :type frame: class: `tkinter.Frame`
+        """
         if username == '' or password == '':
             self.master.click_music.play()
             label.config(text=self._('Username and password can`t be empty'))

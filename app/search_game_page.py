@@ -2,29 +2,34 @@
 
 import time
 import tkinter as tk
+import os
+import sys
 import tkinter.font as tkfont
 import threading
 import gettext
 from typing import Callable, Dict
-from typing import Dict
 import requests
 import setting_page as setp
 import game_page as gp
 
-translation = gettext.translation('tictactoe', 'locale', fallback=True)
+
+translation = gettext.translation('tictactoe',
+                                  os.path.join(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))),
+                                               'locale'),
+                                  fallback=True)
 
 
 class TimeCounter(tk.Label):
     """
-       The timer class.
+    The timer class.
 
-       :param parent: Object of the `SearchGamePage` class
-       :type parent: class: `SearchGamePage`
-       :param font: The font style for the timer
-       :type font: class: `tkinter.font.Font`
-       :param *args: Positional arguments
-       :param **kwargs: Named arguments
-       """
+    :param parent: Object of the `SearchGamePage` class
+    :type parent: class: `SearchGamePage`
+    :param font: The font style for the timer
+    :type font: class: `tkinter.font.Font`
+    :param *args: Positional arguments
+    :param **kwargs: Named arguments
+    """
 
     def __init__(self, parent: 'SearchGamePage', font: tkfont.Font, *args, **kwargs) -> None:
         """Constructor method."""
@@ -53,21 +58,21 @@ class TimeCounter(tk.Label):
 
 class CircularWaitingIndicator(tk.Canvas):
     """
-        The class of the circular game search indicator.
+    The class of the circular game search indicator.
 
-        :param parent: Object of the `SearchGamePage` class
-        :type parent: class: `SearchGamePage`
-        :param width: Width of the circular game search indicator, defaults to 80
-        :type width: class: `int`
-        :param height: Height of the circular game search indicator, defaults to 80
-        :type height: class: `int`
-        :param color: Color of the circular game search indicator, defaults to "blue"
-        :type color: class: `str`
-        :param thickness: Thickness of the circular game search indicator, defaults to 5
-        :type thickness: class: `int`
-        :param speed: Speed of the circular game search indicator, defaults to 5
-        :type speed: class: `int`
-        """
+    :param parent: Object of the `SearchGamePage` class
+    :type parent: class: `SearchGamePage`
+    :param width: Width of the circular game search indicator, defaults to 80
+    :type width: class: `int`
+    :param height: Height of the circular game search indicator, defaults to 80
+    :type height: class: `int`
+    :param color: Color of the circular game search indicator, defaults to "blue"
+    :type color: class: `str`
+    :param thickness: Thickness of the circular game search indicator, defaults to 5
+    :type thickness: class: `int`
+    :param speed: Speed of the circular game search indicator, defaults to 5
+    :type speed: class: `int`
+    """
 
     def __init__(self, parent: 'SearchGamePage', width: int = 80, height: int = 80, color: str = 'blue',
                  thickness: int = 5, speed: int = 5) -> None:
@@ -91,11 +96,11 @@ class CircularWaitingIndicator(tk.Canvas):
 
 class SearchGamePage(tk.Frame):
     """
-       The class of the game search page.
+    The class of the game search page.
 
-       :param master: An instance of the main class of the game application
-       :type master: class: `tictactoe.App`
-       """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
         """Constructor method."""
@@ -145,11 +150,11 @@ class SearchGamePage(tk.Frame):
 
     def game_ready(self, data: Dict[str, str]) -> None:
         """
-                A method that triggers when a game is found and switches the interface to the game page.
+        A method that triggers when a game is found and switches the interface to the game page.
 
-                :param data: Dictionary with game data
-                :type data: class: `dict[str, str]`
-                """
+        :param data: Dictionary with game data
+        :type data: class: `dict[str, str]`
+        """
         if not self.master.mute_flag:
             self.master.background_music.set_volume(0)
         self.master.find_music.play()

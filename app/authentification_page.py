@@ -3,8 +3,13 @@
 import tkinter as tk
 import json
 import pickle
+import gettext
+from typing import Callable
 import requests
 import start_page as stp
+
+
+translation = gettext.translation('tictactoe', 'locale', fallback=True)
 
 
 class AuthStartPage(tk.Frame):
@@ -22,6 +27,11 @@ class AuthStartPage(tk.Frame):
         self.configure(height=600, width=550)
         self.pack_propagate(False)
 
+        if not self.master.lang_flag:
+            self._: Callable = lambda s: s
+        else:
+            self._: Callable = translation.gettext
+
         self.label: tk.Label = tk.Label()
         self.button1: tk.Button = tk.Button()
         self.button2: tk.Button = tk.Button()
@@ -30,12 +40,12 @@ class AuthStartPage(tk.Frame):
 
     def _create_widgets(self) -> None:
         """The method of rendering widgets of the authorization page."""
-        self.label = tk.Label(self, font=self.master.font, text='Welcome to the "Tic-Tac-Toe" game!')
+        self.label = tk.Label(self, font=self.master.font, text=self._('Welcome to the "Tic-Tac-Toe" game!'))
         self.label.pack(side="top", pady=(15, 25))
 
         self._create_image()
 
-        self.button1 = tk.Button(self, bg="white", font=self.master.btn_font, text="Register", width=30,
+        self.button1 = tk.Button(self, bg="white", font=self.master.btn_font, text=self._("Register"), width=30,
                                  command=lambda: self.master.switch_frame(RegisterPage))
         self.button1.pack(side="top", pady=(40, 5))
 
@@ -48,6 +58,23 @@ class AuthStartPage(tk.Frame):
         canvas = tk.Canvas(self, bg="white", height=400, width=400)
         canvas.create_image(25, 25, anchor="nw", image=self.master.tictactoe_image)
         canvas.pack(side="top")
+
+    def change_language(self, lang: str) -> None:
+        """
+        Method with action for the language change button.
+
+        :param lang: A string with the localization language of the application, "en" or "ru"
+        :type lang: class: `str`
+        """
+        if lang == 'ru':
+            self._ = translation.gettext
+        else:
+            self._ = lambda s: s
+
+        self.master.title(self._("Tic-Tac-Toe"))
+        self.label.config(text=self._('Welcome to the "Tic-Tac-Toe" game!'))
+        self.button1.config(text=self._("Register"))
+        self.button2.config(text=self._("Log in"))
 
 
 class RegisterPage(tk.Frame):
@@ -64,6 +91,11 @@ class RegisterPage(tk.Frame):
 
         self.configure(height=280, width=800)
         self.pack_propagate(False)
+
+        if not self.master.lang_flag:
+            self._: Callable = lambda s: s
+        else:
+            self._: Callable = translation.gettext
 
         self.label1: tk.Label = tk.Label()
         self.label2: tk.Label = tk.Label()
@@ -107,7 +139,7 @@ class RegisterPage(tk.Frame):
                 """
         if username == '' or password == '':
             self.master.click_music.play()
-            label.config(text='Username and password can`t be empty')
+            label.config(text=self._('Username and password can`t be empty'))
             frame.after(1000, lambda: label.config(text=""))
             return
 
@@ -117,7 +149,7 @@ class RegisterPage(tk.Frame):
         response = requests.post(url, headers=headers, data=json.dumps(data))
         if response.json()['message'] == 'Username already exists':
             self.master.click_music.play()
-            label.config(text='Username "{username}" already exists'.format(username=username))
+            label.config(text=self._('Username "{username}" already exists').format(username=username))
             frame.after(1000, lambda: label.config(text=""))
         else:
             self.master.switch_frame(AuthStartPage)
@@ -127,13 +159,13 @@ class RegisterPage(tk.Frame):
         frame0 = tk.Frame(self)
         frame0.pack(side="top", pady=(15, 10))
 
-        self.label1 = tk.Label(frame0, font=self.master.font, text="Register page")
+        self.label1 = tk.Label(frame0, font=self.master.font, text=self._("Register page"))
         self.label1.pack()
 
         frame1 = tk.Frame(self)
         frame1.pack(side="top", pady=(15, 5))
 
-        self.label2 = tk.Label(frame1, font=self.master.font, text="Username")
+        self.label2 = tk.Label(frame1, font=self.master.font, text=self._("Username"))
         self.label2.pack(side='left', padx=(0, 10))
 
         username_entry = tk.Entry(frame1, font=self.master.btn_font, width=60)
@@ -142,7 +174,7 @@ class RegisterPage(tk.Frame):
         frame2 = tk.Frame(self)
         frame2.pack(side="top", pady=(0, 15))
 
-        self.label3 = tk.Label(frame2, font=self.master.font, text="Password")
+        self.label3 = tk.Label(frame2, font=self.master.font, text=self._("Password"))
         self.label3.pack(side='left', padx=(0, 10))
         password_entry = tk.Entry(frame2, font=self.master.btn_font, show="*", width=57)
         password_entry.pack(side='left')
@@ -162,17 +194,35 @@ class RegisterPage(tk.Frame):
         frame4.pack(side="top", pady=(0, 5))
 
         self.register_button = tk.Button(frame4, bg="white", width=30, font=self.master.btn_font,
-                                         text="Register",
+                                         text=self._("Register"),
                                          command=lambda: self.register(username_entry.get(),
                                                                        password_entry.get(),
                                                                        self.warning_message, frame3))
         self.register_button.pack()
 
         self.button1 = tk.Button(self, bg="white", font=self.master.btn_font,
-                                 text="Return to authorization page",
+                                 text=self._("Return to authorization page"),
                                  command=lambda: self.master.switch_frame(AuthStartPage), width=30)
         self.button1.pack(side="top", pady=(0, 0))
 
+    def change_language(self, lang: str) -> None:
+        """
+        Method with action for the language change button.
+
+        :param lang: A string with the localization language of the application, "en" or "ru"
+        :type lang: class: `str`
+        """
+        if lang == 'ru':
+            self._ = translation.gettext
+        else:
+            self._ = lambda s: s
+
+        self.master.title(self._("Tic-Tac-Toe"))
+        self.label1.config(text=self._("Register page"))
+        self.label2.config(text=self._("Username"))
+        self.label3.config(text=self._("Password"))
+        self.register_button.config(text=self._("Register"))
+        self.button1.config(text=self._("Return to authorization page"))
 
 class LoginPage(tk.Frame):
     """
@@ -188,6 +238,11 @@ class LoginPage(tk.Frame):
 
         self.configure(height=300, width=800)
         self.pack_propagate(False)
+
+        if not self.master.lang_flag:
+            self._: Callable = lambda s: s
+        else:
+            self._: Callable = translation.gettext
 
         self.label1: tk.Label = tk.Label()
         self.label2: tk.Label = tk.Label()
@@ -235,7 +290,7 @@ class LoginPage(tk.Frame):
                """
         if username == '' or password == '':
             self.master.click_music.play()
-            label.config(text='Username and password can`t be empty')
+            label.config(text=self._('Username and password can`t be empty'))
             frame.after(1000, lambda: label.config(text=""))
             return
 
@@ -246,17 +301,17 @@ class LoginPage(tk.Frame):
 
         if response.json()['message'] == 'Invalid username or password':
             self.master.click_music.play()
-            label.config(text='Invalid username or password')
+            label.config(text=self._('Invalid username or password'))
             frame.after(1000, lambda: label.config(text=""))
         elif response.json()['message'] == 'Error':
             self.master.click_music.play()
-            label.config(text='{username} already logged in'.format(username=username))
+            label.config(text=self._('{username} already logged in').format(username=username))
             frame.after(1000, lambda: label.config(text=""))
         else:
             self.master.token = response.cookies
             self.master.user_id = response.json()['user_id']
             if remember_me.get():
-                with open(self.master.resource_path('token.pickle', 'wb')) as file:
+                with open('token.pickle', 'wb') as file:
                     pickle.dump(self.master.token, file)
 
                 self.master.remember_login = True
@@ -275,13 +330,13 @@ class LoginPage(tk.Frame):
         frame0 = tk.Frame(self)
         frame0.pack(side="top", pady=(15, 10))
 
-        self.label1 = tk.Label(frame0, font=self.master.font, text="Log in page")
+        self.label1 = tk.Label(frame0, font=self.master.font, text=self._("Log in page"))
         self.label1.pack()
 
         frame1 = tk.Frame(self)
         frame1.pack(side="top", pady=(15, 5))
 
-        self.label2 = tk.Label(frame1, font=self.master.font, text="Username")
+        self.label2 = tk.Label(frame1, font=self.master.font, text=self._("Username"))
         self.label2.pack(side='left', padx=(0, 10))
 
         username_entry = tk.Entry(frame1, font=self.master.btn_font, width=60)
@@ -290,7 +345,7 @@ class LoginPage(tk.Frame):
         frame2 = tk.Frame(self)
         frame2.pack(side="top", pady=(0, 5))
 
-        self.label3 = tk.Label(frame2, font=self.master.font, text="Password")
+        self.label3 = tk.Label(frame2, font=self.master.font, text=self._("Password"))
         self.label3.pack(side='left', padx=(0, 10))
 
         password_entry = tk.Entry(frame2, font=self.master.btn_font, show="*", width=57)
@@ -305,7 +360,7 @@ class LoginPage(tk.Frame):
         frame4.pack(side="top", pady=(0, 15))
 
         remember_me_var = tk.BooleanVar()
-        self.remember_me_checkbox = tk.Checkbutton(frame4, font=self.master.btn_font, text="Remember Me",
+        self.remember_me_checkbox = tk.Checkbutton(frame4, font=self.master.btn_font, text=self._("Remember Me"),
                                                    variable=remember_me_var, command=self.master.click_music.play)
         self.remember_me_checkbox.pack()
 
@@ -318,12 +373,32 @@ class LoginPage(tk.Frame):
         frame4 = tk.Frame(self)
         frame4.pack(side="top", pady=(0, 5))
 
-        self.register_button = tk.Button(frame4, bg="white", width=30, font=self.master.btn_font, text="Log in",
+        self.register_button = tk.Button(frame4, bg="white", width=30, font=self.master.btn_font, text=self._("Log in"),
                                          command=lambda: self.login(username_entry.get(), password_entry.get(),
                                                                     remember_me_var, self.warning_message, frame3))
         self.register_button.pack()
 
         self.button1 = tk.Button(self, bg="white", font=self.master.btn_font,
-                                 text="Return to authorization page",
+                                 text=self._("Return to authorization page"),
                                  command=lambda: self.master.switch_frame(AuthStartPage), width=30)
         self.button1.pack(side="top", pady=(0, 0))
+
+    def change_language(self, lang: str) -> None:
+        """
+        Method with action for the language change button.
+
+        :param lang: A string with the localization language of the application, "en" or "ru"
+        :type lang: class: `str`
+        """
+        if lang == 'ru':
+            self._ = translation.gettext
+        else:
+            self._ = lambda s: s
+
+        self.master.title(self._("Tic-Tac-Toe"))
+        self.label1.config(text=self._("Log in page"))
+        self.label2.config(text=self._("Username"))
+        self.label3.config(text=self._("Password"))
+        self.register_button.config(text=self._("Log in"))
+        self.remember_me_checkbox.config(text=self._("Remember Me"))
+        self.button1.config(text=self._("Return to authorization page"))

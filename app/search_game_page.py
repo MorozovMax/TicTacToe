@@ -4,10 +4,14 @@ import time
 import tkinter as tk
 import tkinter.font as tkfont
 import threading
+import gettext
+from typing import Callable, Dict
 from typing import Dict
 import requests
 import setting_page as setp
 import game_page as gp
+
+translation = gettext.translation('tictactoe', 'locale', fallback=True)
 
 
 class TimeCounter(tk.Label):
@@ -107,6 +111,11 @@ class SearchGamePage(tk.Frame):
         self.warning_message: tk.Label = tk.Label()
         self.button: tk.Button = tk.Button()
 
+        if not self.master.lang_flag:
+            self._: Callable = lambda s: s
+        else:
+            self._: Callable = translation.gettext
+
         self.label1: tk.Label = tk.Label()
 
         self._create_widgets()
@@ -144,7 +153,7 @@ class SearchGamePage(tk.Frame):
         if not self.master.mute_flag:
             self.master.background_music.set_volume(0)
         self.master.find_music.play()
-        self.warning_message.config(text='The game is ready')
+        self.warning_message.config(text=self._('The game is ready'))
         self.button.config(state="disabled")
 
         self.master.game_id = data['game_id']
@@ -160,7 +169,7 @@ class SearchGamePage(tk.Frame):
 
     def _create_widgets(self) -> None:
         """The method of rendering widgets of the game search page."""
-        self.label1 = tk.Label(self, font=self.master.font, text='The game is being searched for')
+        self.label1 = tk.Label(self, font=self.master.font, text=self._('The game is being searched for'))
         self.label1.pack(side="top", pady=(15, 30))
 
         indicator = CircularWaitingIndicator(self)
@@ -179,3 +188,19 @@ class SearchGamePage(tk.Frame):
         self.button = tk.Button(self, bg="white", font=self.master.btn_font, text="Reset search", width=30,
                                 command=self.reset_search)
         self.button.pack(side='top')
+
+    def change_language(self, lang: str) -> None:
+        """
+        Method with action for the language change button.
+
+        :param lang: A string with the localization language of the application, "en" or "ru"
+        :type lang: class: `str`
+        """
+        if lang == 'ru':
+            self._ = translation.gettext
+        else:
+            self._ = lambda s: s
+
+        self.master.title(self._("Tic-Tac-Toe"))
+        self.label1.config(text=self._('The game is being searched for'))
+        self.button.config(text=self._("Reset search"))

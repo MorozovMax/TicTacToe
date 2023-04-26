@@ -3,11 +3,15 @@
 import tkinter as tk
 import random
 import json
+import gettext
+from typing import Tuple, List, Optional, Dict, Callable, Union
 from typing import Tuple, List, Optional, Dict, Union
 import pygame as pg
 import requests
 import socketio
 import setting_page as setp
+
+translation = gettext.translation('tictactoe', 'locale', fallback=True)
 
 
 class FriendGame(tk.Frame):
@@ -29,6 +33,11 @@ class FriendGame(tk.Frame):
         self.pack_propagate(False)
 
         self._cur_music: pg.mixer.Sound = self.master.win_music
+
+        if not self.master.lang_flag:
+            self._: Callable = lambda s: s
+        else:
+            self._: Callable = translation.gettext
 
         self._status_msg: str = 'Waiting for the opponent'
 
@@ -88,13 +97,13 @@ class FriendGame(tk.Frame):
 
         if self.turn == "Your turn":
             self.turn_flag = True
-            self._status_msg = "Now your turn"
+            self._status_msg = self._("Now your turn")
             self._status.config(text=self._status_msg)
             for elem in self._field:
                 elem["state"] = "normal"
         else:
             self.turn_flag = False
-            self._status_msg = "Waiting for the opponent turn"
+            self._status_msg = self._("Waiting for the opponent turn")
             self._status.config(text=self._status_msg)
 
         self._return_btn.config(state='normal')
@@ -115,7 +124,7 @@ class FriendGame(tk.Frame):
         if is_draw:
             self._end_game = True
             self.is_draw_flag = True
-            self._status_msg = "It is a draw"
+            self._status_msg = self._("It is a draw")
             self._status.config(text=self._status_msg)
             self._cur_music = self.master.draw_music
             for elem in self._field:
@@ -131,7 +140,7 @@ class FriendGame(tk.Frame):
             pos_c = data['c']
             self._end_game = True
             self.win_flag = False
-            self._status_msg = "{player} win".format(player=self.opponent)
+            self._status_msg = self._("{player} win").format(player=self.opponent)
             self._status.config(text=self._status_msg)
             self._field[pos_a]["background"], self._field[pos_b]["background"], self._field[pos_c]["background"] = \
                 "#F08080", "#F08080", "#F08080"
@@ -156,7 +165,7 @@ class FriendGame(tk.Frame):
         self._field[square]["disabledforeground"] = self._color[self.opponent_sign]
         self._free_squares.remove(square)
         self.turn_flag = True
-        self._status_msg = "Now your turn"
+        self._status_msg = self._("Now your turn")
         self._status["text"] = self._status_msg
         self.master.click_music.play()
         for elem in self._free_squares:
@@ -167,7 +176,7 @@ class FriendGame(tk.Frame):
         self.master.win_music.play()
         self._end_game = True
         self.opponent_reset = True
-        self._status_msg = "{player} reset the game".format(player=self.opponent)
+        self._status_msg = self._("{player} reset the game").format(player=self.opponent)
         for elem in self._free_squares:
             self._field[elem]["state"] = "disabled"
         self._status["text"] = self._status_msg
@@ -223,7 +232,7 @@ class FriendGame(tk.Frame):
                 :type pos_c: class: `int`
                 """
         self._end_game = True
-        self._status_msg = "{player} win".format(player=self.master.user)
+        self._status_msg = self._("{player} win").format(player=self.master.user)
         self.win_flag = True
         self._field[pos_a]["background"], self._field[pos_b]["background"], self._field[pos_c]["background"] = \
             self._end_game_color()
@@ -233,7 +242,7 @@ class FriendGame(tk.Frame):
         if not self._free_squares:
             self._end_game = True
             self.is_draw_flag = True
-            self._status_msg = "It is a draw"
+            self._status_msg = self._("It is a draw")
             self._cur_music = self.master.draw_music
             for elem in self._field:
                 elem["background"] = "#F0E68C"
@@ -305,7 +314,7 @@ class FriendGame(tk.Frame):
     def _bind_return_btn(self) -> None:
         """A method that changes a "Reset game" button to a "Return to online game page" button."""
         self._return_btn_flag = True
-        self._return_btn["text"] = "Return to online game page"
+        self._return_btn["text"] = self._("Return to online game page")
         self._return_btn["command"] = self._switch_frame
         self._return_btn["state"] = "normal"
 
@@ -316,7 +325,7 @@ class FriendGame(tk.Frame):
                """
         if not self._end_game:
             self.turn_flag = False
-            self._status_msg = "Waiting for the opponent turn"
+            self._status_msg = self._("Waiting for the opponent turn")
             self._status["text"] = self._status_msg
 
     @staticmethod
@@ -394,7 +403,7 @@ class FriendGame(tk.Frame):
 
     def _create_return_btn(self) -> None:
         """The method of rendering "Reset game" button."""
-        self._return_btn = tk.Button(self, bg="white", font=self.master.btn_font, text="Reset game",
+        self._return_btn = tk.Button(self, bg="white", font=self.master.btn_font, text=self._("Reset game"),
                                      command=self.reset_game, state='disabled', width=30)
         self._return_btn.pack(side="top", pady=(0, 15))
 
@@ -406,6 +415,44 @@ class FriendGame(tk.Frame):
                                           'opponent_id': self.opponent_id})
 
         self._switch_frame()
+
+    def change_language(self, lang: str) -> None:
+        """
+        Method with action for the language change button.
+
+        :param lang: A string with the localization language of the application, "en" or "ru"
+        :type lang: class: `str`
+        """
+        if lang == 'ru':
+            self._ = translation.gettext
+        else:
+            self._ = lambda s: s
+
+        self.master.title(self._("Tic-Tac-Toe"))
+        if not self._return_btn_flag:
+            self._return_btn.config(text=self._("Reset game"))
+        else:
+            self._return_btn.config(text=self._("Return to online game page"))
+
+        if self._end_game:
+            if self.is_draw_flag:
+                self._status.config(text=self._("It is a draw"))
+            elif self.opponent_reset:
+                self._status.config(text=self._("{player} reset the game").format(player=self.opponent))
+            else:
+                if self.win_flag:
+                    self._status.config(text=self._("{player} win").format(player=self.opponent))
+                else:
+                    self._status.config(text=self._("{player} win").format(player=self.master.user))
+        else:
+            if self.start_flag:
+                if self.turn_flag:
+                    self._status.config(text=self._("Now your turn"))
+                else:
+                    self._status.config(text=self._("Waiting for the opponent turn"))
+            else:
+                self._status.config(text=self._('Waiting for the opponent'))
+
 
 
 class PcGame(tk.Frame):
@@ -427,7 +474,12 @@ class PcGame(tk.Frame):
 
         self.master.cur_page = 'Game_page_pc'
 
-        self._status_msg: str = 'Press "Start" button to start the game'
+        if not self.master.lang_flag:
+            self._: Callable = lambda s: s
+        else:
+            self._: Callable = translation.gettext
+
+        self._status_msg: str = self._('Press "Start" button to start the game')
         self._user1_sign, self._user2_sign = self._sign_choose()
         self._user1, self._user2 = self._player_name()
         self._player_sign_msg: str = f"{self.master.user}:  {self._user1_sign}       {self._user2}:  {self._user2_sign}"
@@ -514,7 +566,7 @@ class PcGame(tk.Frame):
 
     def _create_return_btn(self) -> None:
         """The method of rendering "Start" button for starting the game."""
-        self._return_btn = tk.Button(self, bg="white", font=self.master.btn_font, text="Start",
+        self._return_btn = tk.Button(self, bg="white", font=self.master.btn_font, text=self._("Start"),
                                      command=self._start_game, width=30)
         self._return_btn.pack(side="top", pady=(0, 15))
 
@@ -569,7 +621,7 @@ class PcGame(tk.Frame):
     def _bind_return_btn(self) -> None:
         """A method that changes the label and action for the "Start" button."""
         self._return_btn_flag = True
-        self._return_btn["text"] = "Return to configure page"
+        self._return_btn["text"] = self._("Return to configure page")
         self._return_btn["command"] = self._switch_frame
         self._return_btn["state"] = "disabled"
 
@@ -587,7 +639,7 @@ class PcGame(tk.Frame):
         """A method that makes the playing field active and informs that the game has started."""
         for elem in self._field:
             elem["state"] = "normal"
-        self._status_msg = "The game has started"
+        self._status_msg = self._("The game has started")
         self._status["text"] = self._status_msg
 
     def _change_sign_and_status(self) -> None:
@@ -682,9 +734,9 @@ class PcGame(tk.Frame):
         self._end_game = True
         self._set_end_game_music()
         if self._cur_player == "Computer":
-            self._status_msg = "{player} win".format(player=self._cur_player)
+            self._status_msg = self._("{player} win").format(player=self._cur_player)
         else:
-            self._status_msg = "{player} win".format(player=self.master.user)
+            self._status_msg = self._("{player} win").format(player=self.master.user)
         self._field[pos_a]["background"], self._field[pos_b]["background"], self._field[pos_c]["background"] = \
             self._end_game_color()
 
@@ -693,7 +745,7 @@ class PcGame(tk.Frame):
         if not self._free_squares:
             self._end_game = True
             self._is_draw = True
-            self._status_msg = "It is a draw"
+            self._status_msg = self._("It is a draw")
             self._cur_music = self.master.draw_music
             for elem in self._field:
                 elem["background"] = "#F0E68C"
@@ -809,3 +861,33 @@ class PcGame(tk.Frame):
         self._click_1(square)
         if not self._end_game:
             self._computer_turn()
+
+    def change_language(self, lang: str) -> None:
+        """
+        Method with action for the language change button.
+
+        :param lang: A string with the localization language of the application, "en" or "ru"
+        :type lang: class: `str`
+        """
+        if lang == 'ru':
+            self._ = translation.gettext
+        else:
+            self._ = lambda s: s
+
+        self.master.title(self._("Tic-Tac-Toe"))
+        if not self._return_btn_flag:
+            self._return_btn.config(text=self._("Start"))
+            self._status.config(text=self._('Press "Start" button to start the game'))
+        else:
+            self._return_btn.config(text=self._("Return to configure page"))
+            if self._end_game:
+                if self._is_draw:
+                    self._status.config(text=self._("It is a draw"))
+                else:
+                    if self._cur_player == "Computer":
+                        self._status.config(text=self._("{player} win").format(player=self._cur_player))
+                    else:
+                        self._status.config(text=self._("{player} win").format(player=self.master.user))
+            else:
+                self._status.config(text=self._("The game has started"))
+

@@ -10,8 +10,9 @@ import sys
 import os
 import pickle
 import json
+import gettext
 from pathlib import Path
-from typing import Union, Dict, Optional
+from typing import Union, Dict, Callable, Optional
 import pygame as pg
 import requests
 import socketio
@@ -22,6 +23,9 @@ import search_game_page as sgp
 import game_page as gap
 
 
+translation = gettext.translation('tictactoe', 'locale', fallback=True)
+
+
 class App(tk.Tk):
     """The main class of the game application."""
 
@@ -29,7 +33,9 @@ class App(tk.Tk):
         """Constructor method."""
         super().__init__()
 
-        self.title("Tic-Tac-Toe")
+        self._: Callable = lambda s: s
+
+        self.title(self._("Tic-Tac-Toe"))
         self.resizable(False, False)
 
         self._frame: Union[None, stp.StartPage, setp.FriendStartPage,
@@ -48,7 +54,12 @@ class App(tk.Tk):
         self._mute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                   "mute.png")).resize((30, 30)))
         self._unmute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
-                                                                                    "unmute.png")).resize((30, 30)))
+                                                                             "unmute.png")).resize((30, 30)))
+
+        self._en_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
+                                                                                "EN.png")).resize((30, 30)))
+        self._ru_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
+                                                                                "RU.png")).resize((30, 30)))
 
         self.hide_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1, "hide.png")).resize((20, 20)))
         self.show_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1, "show.png")).resize((20, 20)))
@@ -80,6 +91,7 @@ class App(tk.Tk):
         self.draw_music.set_volume(0.3)
 
         self.mute_flag: bool = False
+        self.lang_flag: bool = False
         self.token = None
 
         self.user_id: Optional[str] = None
@@ -94,7 +106,7 @@ class App(tk.Tk):
         self.background_music.play(-1)
 
         try:
-            with open(self.resource_path('token.pickle'), 'rb') as file:
+            with open('token.pickle', 'rb') as file:
                 self.token = pickle.load(file)
 
             _url = 'http://localhost:5000/'
@@ -118,6 +130,9 @@ class App(tk.Tk):
         self._bottom_frame.pack(side='bottom', fill='x', expand=True)
         self._mute_unmute_btn: tk.Button = tk.Button()
         self._mute_unmute_btn_func(self._bottom_frame)
+
+        self._change_language_btn: tk.Button = tk.Button()
+        self._change_language_btn_func(self._bottom_frame)
 
     @staticmethod
     def resource_path(relative_path: str) -> str:
@@ -143,6 +158,17 @@ class App(tk.Tk):
                                           command=self._background_music_mute_unmute)
         self._mute_unmute_btn.pack(side="left", anchor="sw", padx=10, pady=10)
 
+    def _change_language_btn_func(self, frame: tk.Frame) -> None:
+        """
+        Method of rendering the language change button.
+
+        :param frame: Frame for rendering the language change button
+        :type frame: class: `tkinter.Frame`
+        """
+        self._change_language_btn = tk.Button(frame, background="white", image=self._en_image,
+                                              command=self._change_language)
+        self._change_language_btn.pack(side="right", anchor="se", padx=10, pady=10)
+
     def switch_frame(self, frame_class: type) -> None:
         """
                 Page change method.
@@ -157,8 +183,8 @@ class App(tk.Tk):
             self.sign.set("_")
             self.move.set(-1)
 
-        new_frame: Union[None, stp.StartPage, setp.FriendStartPage, setp.PcStartPage, gap.FriendGame, gap.PcGame,
-                         sgp.SearchGamePage] = frame_class(self)
+        new_frame: Union[stp.StartPage, setp.FriendStartPage, sgp.SearchGamePage,
+                         setp.PcStartPage, gap.FriendGame, gap.PcGame] = frame_class(self)
 
         if self._frame is not None:
             self._frame.destroy()
@@ -176,6 +202,18 @@ class App(tk.Tk):
             self.background_music.set_volume(0.3)
             self._mute_unmute_btn["image"] = self._unmute_image
             self.mute_flag = False
+
+    def _change_language(self) -> None:
+        """Method with action for the language change button."""
+        self.click_music.play()
+        if not self.lang_flag:
+            self._frame.change_language('ru')
+            self._change_language_btn["image"] = self._ru_image
+            self.lang_flag = True
+        else:
+            self._frame.change_language('en')
+            self._change_language_btn["image"] = self._en_image
+            self.lang_flag = False
 
 
 if __name__ == "__main__":

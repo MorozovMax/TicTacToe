@@ -58,7 +58,7 @@ class OnlineGameStat(db.Model):
 
 def hash_password(password: str) -> str:
     """
-    Function for hashing password.
+    Hash password.
 
     :param password: User password
     :type password: class `str`
@@ -70,7 +70,7 @@ def hash_password(password: str) -> str:
 
 def create_user(username: str, password: str) -> str:
     """
-    Function for creating a user profile.
+    Create a user profile.
 
     :param username: User username
     :type username: class: `str`
@@ -97,7 +97,7 @@ def create_user(username: str, password: str) -> str:
 
 def authenticate_user(username: str, password: str) -> Optional[str]:
     """
-    A function for verifying the existence of a user.
+    Verify the existence of a user.
 
     :param username: User username
     :type username: class: `str`
@@ -121,7 +121,7 @@ sessions: List[str] = []
 
 
 def start_game() -> None:
-    """A function that selects two players in a separate thread to start the game."""
+    """Select two players in a separate thread to start the game."""
     while True:
         length = len(waiting_players)
 
@@ -169,7 +169,7 @@ t.start()
 @app.route('/login', methods=['POST'])
 def login() -> flask.Response:
     """
-    A function that authorizes the user in the game.
+    Authorize the user in the game.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -206,7 +206,7 @@ def login() -> flask.Response:
 @app.route('/logout', methods=['GET'])
 def logout() -> flask.Response:
     """
-    A function that logs the user out of the game.
+    Log the user out of the game.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -221,7 +221,7 @@ def logout() -> flask.Response:
 @app.route('/', methods=['GET'])
 def index() -> flask.Response:
     """
-    A function that sends the necessary data to the user when launching the client with the game.
+    Send the necessary data to the user when launching the client with the game.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -243,7 +243,7 @@ def index() -> flask.Response:
 @app.route('/register', methods=['POST'])
 def register() -> flask.Response:
     """
-    A function that registers a user.
+    Register a user.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -262,7 +262,7 @@ def register() -> flask.Response:
 @app.route('/update_computer_statistic', methods=['POST'])
 def update_computer_statistic() -> flask.Response:
     """
-    A function that updates statistics of computer games of user.
+    Update statistics of computer games of user.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -290,7 +290,7 @@ def update_computer_statistic() -> flask.Response:
 @app.route('/update_friend_statistic', methods=['POST'])
 def update_friend_statistic() -> flask.Response:
     """
-    A function that updates statistics of online games of user.
+    Update statistics of online games of user.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -318,7 +318,7 @@ def update_friend_statistic() -> flask.Response:
 @app.route('/reset_search', methods=['GET'])
 def reset_search() -> flask.Response:
     """
-    The function that reset the game search.
+    Reset the game search.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -335,7 +335,7 @@ def reset_search() -> flask.Response:
 
 @socketio.on('connect')
 def on_connect(*args) -> None:
-    """The function of connecting to the game by the user."""
+    """Connect the user to the game."""
     headers = request.headers
     game_id = headers.get('Game-Id')
     user_id = headers.get('User-Id')
@@ -361,8 +361,9 @@ def on_connect(*args) -> None:
 @socketio.on('check_opponent')
 def check_opponent(data: Dict[str, str]) -> None:
     """
-    A function that checks if the opponent is in the game and either tells the user that
-    it is possible to start the game, or tells the user that the opponent reset the game.
+    Check if the opponent is in the game.
+
+    Tell the user that it is possible to start the game, or tells the user that the opponent reset the game.
 
     :param data: Dictionary with game parameters
     :type data: class: `dict[str, str]`
@@ -380,7 +381,7 @@ def check_opponent(data: Dict[str, str]) -> None:
 @socketio.on('play')
 def on_play(data: Dict[str, Union[str, int]]) -> None:
     """
-    A function that informs the opponent about the user's progress.
+    Inform the opponent about the user's progress.
 
     :param data: Dictionary with game parameters
     :type data: class: `dict[str, str | int]`
@@ -401,7 +402,7 @@ def on_play(data: Dict[str, Union[str, int]]) -> None:
 @socketio.on('leave')
 def leave(data: Dict[str, str]) -> None:
     """
-    The function of exiting the game at the end of it.
+    Exit the game at the end of it.
 
     :param data: Dictionary with game parameters
     :type data: class: `dict[str, str]`
@@ -419,7 +420,7 @@ def leave(data: Dict[str, str]) -> None:
 @socketio.on('game_over')
 def game_over(data: Dict[str, Union[str, bool, int]]) -> None:
     """
-    A function that tells the opponent that the game is over.
+    Tell the opponent that the game is over.
 
     :param data: Dictionary with game parameters
     :type data: class: `dict[str, str | bool | int]`
@@ -442,7 +443,7 @@ def game_over(data: Dict[str, Union[str, bool, int]]) -> None:
 @socketio.on('reset_game')
 def reset_game(data: Dict[str, str]) -> None:
     """
-    Function, cancellation of the game by the user.
+    Cancel the game for the user.
 
     :param data: Dictionary with game parameters
     :type data: class: `dict[str, str]`
@@ -461,7 +462,7 @@ def reset_game(data: Dict[str, str]) -> None:
 @app.route('/is_game_searched', methods=['GET'])
 def is_game_searched() -> flask.Response:
     """
-    A function that tells if a game has been found for the user.
+    Tell if a game has been found for the user.
 
     :return: Server response
     :rtype: class: `flask.Response`
@@ -488,7 +489,7 @@ def is_game_searched() -> flask.Response:
 @app.route('/join_queue', methods=['POST'])
 def join_queue() -> flask.Response:
     """
-    A function that adds a user to the list of users who are looking for a game.
+    Add a user to the list of users who are looking for a game.
 
     :return: Server response
     :rtype: class: `flask.Response`

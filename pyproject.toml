@@ -1,0 +1,35 @@
+[project]
+name = "Online TicTacToe"
+version = "1.0.0"
+description = "Exam project for PythonDevelopment2023 course"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Kirill Pavlishin", email = "kirill1999super15@gmail.com"},
+    {name = "Maksim Morozov", email = ""}
+]
+
+keywords = ["tkinter", "online", "tictactoe"]
+classifiers = [
+      "Programming Language :: Python :: 3",
+      "License :: OSI Approved :: MIT License",
+      "Operating System :: Linux"
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
+
+[project.urls]
+repository = "https://github.com/MorozovMax/TicTacToe"
+
+[build-system]
+requires = ["build", "setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+TicTacToe = "app"
+
+[tool.setuptools.package-data]
+TicTacToe = ["locale/ru/*/*.mo", "images_for_readme/*"]

@@ -16,9 +16,18 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode='gevent')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game.db'
+db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database'))
+
+try:
+    os.mkdir(db_dir)
+except FileExistsError:
+    pass
+
+db_path = os.path.join(db_dir, 'game.db')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'TicTacToe_multiplayer_online_game'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=999999999)
@@ -226,6 +235,7 @@ def index() -> flask.Response:
     :return: Server response
     :rtype: class: `flask.Response`
     """
+    print("yes")
     data = jwt.decode(request.cookies['token'], app.secret_key, algorithms=['HS256'])
     session['user_id'] = data['user_id']
     user = User.query.filter_by(id=data['user_id']).first()
@@ -336,9 +346,8 @@ def reset_search() -> flask.Response:
 @socketio.on('connect')
 def on_connect(*args) -> None:
     """Connect the user to the game."""
-    headers = request.headers
-    game_id = headers.get('Game-Id')
-    user_id = headers.get('User-Id')
+    game_id = request.args.get('game_id')
+    user_id = request.args.get('user_id')
 
     users_dict[user_id] = request.sid
 

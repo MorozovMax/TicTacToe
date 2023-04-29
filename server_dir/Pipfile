@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+PyJWT = "*"
+Flask = "*"
+Flask-SocketIO = "*"
+Flask-SQLAlchemy = "*"
+gunicorn = "*"
+gevent = "*"
+websocket-client = "*"
+gevent-websocket = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

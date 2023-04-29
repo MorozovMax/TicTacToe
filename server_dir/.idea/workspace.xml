@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d64458c1-c7b8-4bf9-818b-4eb400ec32de" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/__main__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/authentification_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/authentification_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/game_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/game_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/search_game_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/search_game_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/setting_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/setting_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/start_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/start_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../OnlineTicTacToe/tictactoe.py" beforeDir="false" afterPath="$PROJECT_DIR$/../OnlineTicTacToe/tictactoe.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/../Pipfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Pipfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/server.rst" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/server.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/tech_doc.rst" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/tech_doc.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/user_guide.rst" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/user_guide.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dodo.py" beforeDir="false" afterPath="$PROJECT_DIR$/../dodo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../locale/ru/LC_MESSAGES/tictactoe.po" beforeDir="false" afterPath="$PROJECT_DIR$/../locale/ru/LC_MESSAGES/tictactoe.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/../pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../setup/OnlineTicTacToe.spec" beforeDir="false" afterPath="$PROJECT_DIR$/../setup/OnlineTicTacToe.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../setup/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/../setup/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../setup/setup.spec" beforeDir="false" afterPath="$PROJECT_DIR$/../setup/setup.spec" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2P4xs1vHNeVWQZiLqURKL9zQg8t" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/ggeasy/PycharmProjects/OnlineTicTacToe/server_dir",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d64458c1-c7b8-4bf9-818b-4eb400ec32de" name="Changes" comment="" />
+      <created>1682730371436</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1682730371436</updated>
+    </task>
+    <servers />
+  </component>
+</project>

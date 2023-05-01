@@ -20,11 +20,6 @@ socketio = SocketIO(app, async_mode='gevent')
 
 db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database'))
 
-try:
-    os.mkdir(db_dir)
-except FileExistsError:
-    pass
-
 db_path = os.path.join(db_dir, 'game.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
@@ -63,6 +58,11 @@ class OnlineGameStat(db.Model):
     games_won = db.Column(db.Integer, default=0, nullable=False)
     games_draws = db.Column(db.Integer, default=0, nullable=False)
     games_defeat = db.Column(db.Integer, default=0, nullable=False)
+
+
+with app.app_context():
+    if not os.path.exists(db_path):
+        db.create_all()
 
 
 def hash_password(password: str) -> str:
@@ -518,7 +518,4 @@ def join_queue() -> flask.Response:
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        if not os.path.exists('game.db'):
-            db.create_all()
     socketio.run(app)

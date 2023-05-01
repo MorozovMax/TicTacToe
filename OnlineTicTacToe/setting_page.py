@@ -1,5 +1,7 @@
 """
-A module with a parent class of game settings page, as well as classes of online game
+A module with classes of game settings pages.
+
+Contains a base game setting page class, as well as classes of online game
 settings page and computer game settings page inherited from it.
 """
 
@@ -10,9 +12,9 @@ import json
 import gettext
 from typing import Callable
 import requests
-import start_page as stp
-import game_page as gap
-import search_game_page as sgp
+import OnlineTicTacToe.start_page as stp
+import OnlineTicTacToe.game_page as gap
+import OnlineTicTacToe.search_game_page as sgp
 
 
 translation = gettext.translation('tictactoe',
@@ -30,7 +32,7 @@ class BaseStartPage(tk.Frame):
     """
 
     def __init__(self, master) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__(master)
 
         self.configure(height=280, width=800)
@@ -61,12 +63,12 @@ class BaseStartPage(tk.Frame):
         self._create_widgets()
 
     def _sound(self) -> None:
-        """Method for playing the sound of pressing the button."""
+        """Play the sound of pressing the button."""
         self.master.click_music.play(0)
 
     def _choose_move_widget(self, frame: tk.Frame) -> None:
         """
-        A method for drawing a named frame with a choice of the sequence of the move.
+        Draw a named frame with a choice of the sequence of the move.
 
         :param frame: A frame for drawing a named frame with a choice of the sequence of the move
         :type frame: class: `tkinter.Frame`
@@ -97,7 +99,7 @@ class BaseStartPage(tk.Frame):
 
     def _sign_selection(self, frame: tk.Frame) -> None:
         """
-        Method for drawing a named frame with a sign selection.
+        Draw a named frame with a sign selection.
 
         :param frame: Frame for drawing a named frame with a choice of sign
         :type frame: class: `tkinter.Frame`
@@ -127,12 +129,12 @@ class BaseStartPage(tk.Frame):
         self.sign_selection3.pack(side="top", pady=(4, 14), padx=5)
 
     def _game_type(self) -> None:
-        """Method for drawing a label with a game type."""
+        """Draw a label with a game type."""
         pass
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
         """
-        A method for drawing the start game and return to the start page buttons.
+        Draw the start game and return to the start page buttons.
 
         :param frame: Frame for drawing the start game and return to the start page buttons
         :type frame: class: `tkinter.Frame`
@@ -141,7 +143,7 @@ class BaseStartPage(tk.Frame):
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
         """
-        Method for rendering a label frame with statistics.
+        Render a label frame with statistics.
 
         :param frame: Frame for drawing a label frame with statistics
         :type frame: class: `tkinter.Frame`
@@ -149,7 +151,7 @@ class BaseStartPage(tk.Frame):
         pass
 
     def _create_widgets(self) -> None:
-        """The method of rendering widgets of the game settings page."""
+        """Render widgets of the game settings page."""
         self._game_type()
 
         frame1 = tk.Frame(self)
@@ -174,17 +176,17 @@ class FriendStartPage(BaseStartPage):
     """
 
     def __init__(self, master) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__(master)
 
     def _game_type(self) -> None:
-        """Method for drawing a label with the online game type."""
+        """Draw a label with the online game type."""
         self.label1 = tk.Label(self, font=self.master.font, text=self._("Online game"))
         self.label1.pack(side="top", pady=(10, 0))
 
     def search_game(self) -> None:
-        """A method with an action for the "Search the game" button."""
-        url = 'http://localhost:5000/join_queue'
+        """Set action for the "Search the game" button."""
+        url = 'https://tictactoegame.serveo.net/join_queue'
         headers = {'Content-Type': 'application/json'}
         data = {'sign': self.master.sign.get(), 'turn': str(self.master.move.get())}
         requests.post(url, headers=headers, data=json.dumps(data), cookies=self.master.token)
@@ -192,12 +194,12 @@ class FriendStartPage(BaseStartPage):
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
         """
-        Method for rendering a label frame with online game statistics.
+        Render a label frame with online game statistics.
 
         :param frame: Frame for drawing a label frame with online game statistics
         :type frame: class: `tkinter.Frame`
         """
-        self.statistics = tk.LabelFrame(frame, font=self.master.font, text=" Game statistic ", labelanchor="n")
+        self.statistics = tk.LabelFrame(frame, font=self.master.font, text=self._(" Game statistic "), labelanchor="n")
         self.statistics.pack(side="left", padx=12, anchor="nw")
         self.statistics1 = tk.Label(self.statistics, font=self.master.btn_font, bg="white",
                                     text=self._("Number of played games - {}").format(self.master.friend_stat[
@@ -228,12 +230,12 @@ class FriendStartPage(BaseStartPage):
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
         """
-        A method for drawing the search the game and return to the start page buttons.
+        Draw the search the game and return to the start page buttons.
 
         :param frame: Frame for drawing the search the game and return to the start page buttons
         :type frame: class: `tkinter.Frame`
         """
-        self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text="Search the game",
+        self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text=self._("Search the game"),
                                  command=self.search_game, width=30)
         self.button1.pack(side="top", pady=(0, 5))
 
@@ -243,7 +245,7 @@ class FriendStartPage(BaseStartPage):
 
     def change_language(self, lang: str) -> None:
         """
-        Method with action for the language change button.
+        Set action for the language change button.
 
         :param lang: A string with the localization language of the application, "en" or "ru"
         :type lang: class: `str`
@@ -287,22 +289,22 @@ class PcStartPage(BaseStartPage):
     """
 
     def __init__(self, master) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__(master)
 
     def _game_type(self) -> None:
-        """Method for drawing a label with the computer game type."""
+        """Draw a label with the computer game type."""
         self.label1 = tk.Label(self, font=self.master.font, text=self._("Game with computer"))
         self.label1.pack(side="top", pady=(10, 0))
 
     def _statistic_widget(self, frame: tk.Frame) -> None:
         """
-        Method for rendering a label frame with computer game statistics.
+        Render a label frame with computer game statistics.
 
         :param frame: Frame for drawing a label frame with computer game statistics
         :type frame: class: `tkinter.Frame`
         """
-        self.statistics = tk.LabelFrame(frame, font=self.master.font, text=" Game statistic ", labelanchor="n")
+        self.statistics = tk.LabelFrame(frame, font=self.master.font, text=self._(" Game statistic "), labelanchor="n")
         self.statistics.pack(side="left", padx=12, anchor="nw")
         self.statistics1 = tk.Label(self.statistics, font=self.master.btn_font, bg="white",
                                     text=self._("Number of played games - {}").format(self.master.pc_stat[
@@ -332,12 +334,12 @@ class PcStartPage(BaseStartPage):
 
     def _start_and_return_btn(self, frame: tk.Frame) -> None:
         """
-        A method for drawing the start computer game and return to the start page buttons.
+        Draw the start computer game and return to the start page buttons.
 
         :param frame: Frame for drawing the start computer game and return to the start page buttons
         :type frame: class: `tkinter.Frame`
         """
-        self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text="Start the game",
+        self.button1 = tk.Button(frame, bg="white", font=self.master.btn_font, text=self._("Start the game"),
                                  command=lambda: self.master.switch_frame(gap.PcGame), width=30)
         self.button1.pack(side="top", pady=(0, 5))
 
@@ -347,7 +349,7 @@ class PcStartPage(BaseStartPage):
 
     def change_language(self, lang: str) -> None:
         """
-        Method with action for the language change button.
+        Set action for the language change button.
 
         :param lang: A string with the localization language of the application, "en" or "ru"
         :type lang: class: `str`

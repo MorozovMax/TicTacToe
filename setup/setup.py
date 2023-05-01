@@ -1,27 +1,25 @@
+"""Module which setup game to your operating system."""
+
 import os
+import subprocess
+import glob
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cur_dir = os.getcwd()
 
-    os.mkdir('/tmp/TicTacToe-install')
-    os.chdir('/tmp/TicTacToe-install')
+    subprocess.run(['python3', '-m', 'venv', 'myappenv'], check=False)
+    subprocess.run([f'{cur_dir}/myappenv/bin/python', '-m', 'pip', 'install', 'pyinstaller'], check=False)
+    subprocess.run([f'{cur_dir}/myappenv/bin/python', '-m', 'pip', 'install', glob.glob(f'{cur_dir}/*.whl')[0]],
+                   check=False)
 
-    os.system('python3 -m venv myappenv')
+    subprocess.run([f'{cur_dir}/myappenv/bin/python', '-m', 'PyInstaller', 'OnlineTicTacToe.spec'], check=False)
 
-    os.system('myappenv/bin/python -m pip install pyinstaller')
-    os.system('cp ' + cur_dir + "/TicTacToe/*.whl" + ' ' + os.getcwd())
+    os.mkdir(f'{cur_dir}/OnlineTicTacToeGame')
 
-    os.system('myappenv/bin/python -m pip install *.whl')
+    subprocess.run(['mv', f'{cur_dir}/dist/OnlineTicTacToe', f'{cur_dir}/OnlineTicTacToeGame/OnlineTicTacToe'],
+                   check=False)
 
-    os.system('cp ' + cur_dir + "/TicTacToe/OnlineTicTacToe.spec" + ' ' + os.getcwd())
-
-    os.system('myappenv/bin/python -m PyInstaller OnlineTicTacToe.spec')
-
-    os.mkdir('/tmp/OnlineTicTacToeGame')
-
-    os.system('mv dist/OnlineTicTacToe /tmp/OnlineTicTacToeGame/OnlineTicTacToe')
-
-    os.chdir(cur_dir)
-
-    os.system('rm -rf /tmp/TicTacToe-install')
+    subprocess.run(['rm', '-rf', f'{cur_dir}/build'], check=False)
+    subprocess.run(['rm', '-rf', f'{cur_dir}/dist'], check=False)
+    subprocess.run(['rm', '-rf', f'{cur_dir}/myappenv'], check=False)

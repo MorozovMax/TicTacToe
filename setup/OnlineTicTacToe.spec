@@ -1,16 +1,19 @@
 # -*- mode: python ; coding: utf-8 -*-
+import glob
+import os
 
 
 block_cipher = None
+cur_dir = os.getcwd()
 
 
 a = Analysis(
-    ['myappenv/lib/python3.*/lib/site-packages/OnlineTicTacToe/tictactoe.py'],
+    [glob.glob(f'{cur_dir}/myappenv/lib/python3.*/site-packages/OnlineTicTacToe/tictactoe.py')[0]],
     pathex=[],
     binaries=[],
-    datas=[(myappenv/lib/python3.*/lib/site-packages/OnlineTicTacToe/images, 'images'),
-           ('myappenv/lib/python3.*/lib/site-packages/OnlineTicTacToe/music', 'music'),
-           ('myappenv/lib/python3.*/lib/site-packages/OnlineTicTacToe/locale', 'locale')],
+    datas=[(glob.glob(f'{cur_dir}/myappenv/lib/python3.*/site-packages/OnlineTicTacToe/images')[0], 'images'),
+           (glob.glob(f'{cur_dir}/myappenv/lib/python3.*/site-packages/OnlineTicTacToe/music')[0], 'music'),
+           (glob.glob(f'{cur_dir}/myappenv/lib/python3.*/site-packages/OnlineTicTacToe/locale')[0], 'locale')],
     hiddenimports=['PIL._tkinter_finder'],
     hookspath=[],
     hooksconfig={},

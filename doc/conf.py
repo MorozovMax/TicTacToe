@@ -9,7 +9,9 @@ import os
 import sys
 
 
-sys.path.insert(0, os.path.abspath('../app'))
+sys.path.insert(0, os.path.abspath('../OnlineTicTacToe'))
+sys.path.insert(0, os.path.abspath('../server_dir'))
+sys.path.insert(0, os.path.abspath('../setup'))
 sys.path.insert(0, os.path.abspath('../'))
 
 project = 'Online TicTacToe'

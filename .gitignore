@@ -3,5 +3,10 @@ requirements.txt
 *.mo
 build
 __pycache__
-_templates
-_build
+dist
+*.egg-info
+database
+TicTacToe
+.doit*
+OnlineTicTacToe/locale
+myappenv

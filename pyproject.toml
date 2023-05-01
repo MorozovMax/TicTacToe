@@ -1,5 +1,5 @@
 [project]
-name = "Online TicTacToe"
+name = "OnlineTicTacToe"
 version = "1.0.0"
 description = "Exam project for PythonDevelopment2023 course"
 readme = "README.md"
@@ -7,10 +7,10 @@ requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "Kirill Pavlishin", email = "kirill1999super15@gmail.com"},
-    {name = "Maksim Morozov", email = ""}
+    {name = "Maksim Morozov", email = "mrzvmax@gmail.com"}
 ]
 
-keywords = ["tkinter", "online", "tictactoe"]
+keywords = ["tkinter", "online", "tictactoe, pygame"]
 classifiers = [
       "Programming Language :: Python :: 3",
       "License :: OSI Approved :: MIT License",
@@ -28,8 +28,11 @@ repository = "https://github.com/MorozovMax/TicTacToe"
 requires = ["build", "setuptools"]
 build-backend = "setuptools.build_meta"
 
+[project.gui-scripts]
+OnlineTicTacToe = "OnlineTicTacToe.tictactoe:main"
+
 [tool.setuptools.package-dir]
-TicTacToe = "app"
+OnlineTicTacToe = "OnlineTicTacToe"
 
 [tool.setuptools.package-data]
-TicTacToe = ["locale/ru/*/*.mo", "images_for_readme/*"]
+OnlineTicTacToe = ["locale/ru/*/*.mo", "images/*", "music/*"]

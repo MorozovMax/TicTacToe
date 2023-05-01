@@ -48,7 +48,8 @@
 <br><br>
 ### Стек технологий:
 Python, Tkinter, PyGame, Flask, Flask-SQLAlchemy, Flask-SocketIO, threading, SocketIO, PyJWT,
-requests, Babel (gettext), Pillow, Sphinx, Gunicorn, Nginx
+requests, Babel (gettext), Pillow, Sphinx, Gunicorn, Docker, docker-compose, pyinstaller, doit,
+setuptools, serveo.net
 <br><br>
 ### Документация:
 Программная:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://example.ru  

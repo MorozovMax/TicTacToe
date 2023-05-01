@@ -1,6 +1,7 @@
 """
 A module with the main class of the game application.
-Also, the application is launched in this module, and the necessary
+
+The application is launched in this module, and the necessary
 actions are performed after closing the application.
 """
 
@@ -17,20 +18,23 @@ import pygame as pg
 import requests
 import socketio
 from PIL import Image, ImageTk
-import start_page as stp
-import setting_page as setp
-import search_game_page as sgp
-import game_page as gap
+import OnlineTicTacToe.start_page as stp
+import OnlineTicTacToe.setting_page as setp
+import OnlineTicTacToe.search_game_page as sgp
+import OnlineTicTacToe.game_page as gap
 
 
-translation = gettext.translation('tictactoe', 'locale', fallback=True)
+translation = gettext.translation('tictactoe',
+                                  os.path.join(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))),
+                                               'locale'),
+                                  fallback=True)
 
 
 class App(tk.Tk):
     """The main class of the game application."""
 
     def __init__(self) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__()
 
         self._: Callable = lambda s: s
@@ -54,7 +58,7 @@ class App(tk.Tk):
         self._mute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                   "mute.png")).resize((30, 30)))
         self._unmute_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
-                                                                             "unmute.png")).resize((30, 30)))
+                                                                                    "unmute.png")).resize((30, 30)))
 
         self._en_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(Path(path1,
                                                                                 "EN.png")).resize((30, 30)))
@@ -109,7 +113,7 @@ class App(tk.Tk):
             with open('token.pickle', 'rb') as file:
                 self.token = pickle.load(file)
 
-            _url = 'http://localhost:5000/'
+            _url = 'https://tictactoegame.serveo.net/'
             _response = requests.get(_url, cookies=self.token)
 
             self.remember_login: bool = True
@@ -123,7 +127,7 @@ class App(tk.Tk):
             self.switch_frame(stp.StartPage)
         except FileNotFoundError:
             self.remember_login: bool = False
-            import authentification_page as ap
+            import OnlineTicTacToe.authentification_page as ap
             self.switch_frame(ap.AuthStartPage)
 
         self._bottom_frame: tk.Frame = tk.Frame(self)
@@ -137,30 +141,30 @@ class App(tk.Tk):
     @staticmethod
     def resource_path(relative_path: str) -> str:
         """
-                Method for getting the full path to a file or directory.
+        Get the full path to a file or directory.
 
-                :param relative_path: Relative path to a file or directory
-                :type relative_path: class: `str`
-                :return: The full path to a file or directory
-                :rtype: class: `str`
-                """
+        :param relative_path: Relative path to a file or directory
+        :type relative_path: class: `str`
+        :return: The full path to a file or directory
+        :rtype: class: `str`
+        """
         base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
         return os.path.join(base_path, relative_path)
 
     def _mute_unmute_btn_func(self, frame: tk.Frame) -> None:
         """
-               Method of rendering the "Mute/Unmute the background music" button.
+        Render the "Mute/Unmute the background music" button.
 
-               :param frame: Frame for rendering the "Mute/Unmute the background music" button
-               :type frame: class: `tkinter.Frame`
-               """
+        :param frame: Frame for rendering the "Mute/Unmute the background music" button
+        :type frame: class: `tkinter.Frame`
+        """
         self._mute_unmute_btn = tk.Button(frame, background="white", image=self._unmute_image,
                                           command=self._background_music_mute_unmute)
         self._mute_unmute_btn.pack(side="left", anchor="sw", padx=10, pady=10)
 
     def _change_language_btn_func(self, frame: tk.Frame) -> None:
         """
-        Method of rendering the language change button.
+        Render the language change button.
 
         :param frame: Frame for rendering the language change button
         :type frame: class: `tkinter.Frame`
@@ -171,11 +175,11 @@ class App(tk.Tk):
 
     def switch_frame(self, frame_class: type) -> None:
         """
-                Page change method.
+        Change application page.
 
-                :param frame_class: The class of any of the game pages
-                :type frame_class: class: `type`
-                """
+        :param frame_class: The class of any of the game pages
+        :type frame_class: class: `type`
+        """
         if (self._frame is not None) and (frame_class != gap.FriendGame):
             self.click_music.play()
 
@@ -192,7 +196,7 @@ class App(tk.Tk):
         self._frame.pack()
 
     def _background_music_mute_unmute(self) -> None:
-        """Method with action for the "Mute/Unmute the background music" button."""
+        """Set action for the "Mute/Unmute the background music" button."""
         self.click_music.play()
         if not self.mute_flag:
             self.background_music.set_volume(0)
@@ -204,7 +208,7 @@ class App(tk.Tk):
             self.mute_flag = False
 
     def _change_language(self) -> None:
-        """Method with action for the language change button."""
+        """Set action for the language change button."""
         self.click_music.play()
         if not self.lang_flag:
             self._frame.change_language('ru')
@@ -216,42 +220,47 @@ class App(tk.Tk):
             self.lang_flag = False
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Run game application and make the necessary actions are performed after closing the application."""
     app = App()
     app.mainloop()
 
     if app.cur_page == 'Search':
-        URL = 'http://localhost:5000/reset_search'
-        response = requests.get(URL, cookies=app.token)
+        url = 'https://tictactoegame.serveo.net/reset_search'
+        requests.get(url, cookies=app.token)
 
     if app.cur_page == 'Game_page_pc' and app.now_game:
         app.pc_stat["Computer_win"] += 1
 
-        URL = 'http://localhost:5000/update_computer_statistic'
+        url = 'https://tictactoegame.serveo.net/update_computer_statistic'
         headers = {'Content-Type': 'application/json'}
         data = {'games_played': app.pc_stat["Player_win"] + app.pc_stat["Computer_win"] + app.pc_stat["drawn_game"],
                 'games_won': app.pc_stat['Player_win'],
                 'games_draws': app.pc_stat['drawn_game'], 'games_defeat': app.pc_stat['Computer_win']}
-        response = requests.post(URL, headers=headers, data=json.dumps(data), cookies=app.token)
+        requests.post(url, headers=headers, data=json.dumps(data), cookies=app.token)
     elif app.cur_page == 'Game_page_fr' and app.now_game:
         app.friend_stat["Player2_win"] += 1
 
-        URL = 'http://localhost:5000/update_friend_statistic'
+        url = 'https://tictactoegame.serveo.net/update_friend_statistic'
         headers = {'Content-Type': 'application/json'}
         data = {'games_played': app.friend_stat["Player1_win"] + app.friend_stat["Player2_win"] +
                 app.friend_stat["drawn_game"],
                 'games_won': app.friend_stat['Player1_win'],
                 'games_draws': app.friend_stat['drawn_game'],
                 'games_defeat': app.friend_stat['Player2_win']}
-        response = requests.post(URL, headers=headers, data=json.dumps(data), cookies=app.token)
+        requests.post(url, headers=headers, data=json.dumps(data), cookies=app.token)
 
         app.sio.emit('reset_game', data={'game_id': app.game_id, 'user_id': app.user_id,
                                          'opponent_id': app.opponent_id})
 
     if not app.remember_login and app.token is not None:
-        URL = 'http://localhost:5000/logout'
-        response = requests.get(URL, cookies=app.token)
+        url = 'https://tictactoegame.serveo.net/logout'
+        requests.get(url, cookies=app.token)
     try:
         app.sio.disconnect()
     except AttributeError:
         pass
+
+
+if __name__ == "__main__":
+    main()

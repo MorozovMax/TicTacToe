@@ -1,0 +1,15 @@
+version: "3"
+
+volumes:
+    database:
+
+services:
+    tictactoe_server:
+        build: .
+        container_name: tictactoe_server
+        ports:
+            - "5000:5000"
+        restart: always
+        volumes:
+            - database:/root/server_dir/database
+            - /home/ggeasy/.ssh:/home/ggeasy/.ssh

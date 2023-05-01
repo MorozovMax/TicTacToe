@@ -1,27 +1,32 @@
 """Module with the authorization page class, as well as with the registration and login page classes."""
 
 import tkinter as tk
+import os
+import sys
 import json
 import pickle
 import gettext
 from typing import Callable
 import requests
-import start_page as stp
+import OnlineTicTacToe.start_page as stp
 
 
-translation = gettext.translation('tictactoe', 'locale', fallback=True)
+translation = gettext.translation('tictactoe',
+                                  os.path.join(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))),
+                                               'locale'),
+                                  fallback=True)
 
 
 class AuthStartPage(tk.Frame):
     """
-       The class of the authorization page where you can choose to register or log in.
+    The class of the authorization page where you can choose to register or log in.
 
-       :param master: An instance of the main class of the game application
-       :type master: class: `tictactoe.App`
-       """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__(master)
 
         self.configure(height=600, width=550)
@@ -39,7 +44,7 @@ class AuthStartPage(tk.Frame):
         self._create_widgets()
 
     def _create_widgets(self) -> None:
-        """The method of rendering widgets of the authorization page."""
+        """Render widgets of the authorization page."""
         self.label = tk.Label(self, font=self.master.font, text=self._('Welcome to the "Tic-Tac-Toe" game!'))
         self.label.pack(side="top", pady=(15, 25))
 
@@ -49,19 +54,19 @@ class AuthStartPage(tk.Frame):
                                  command=lambda: self.master.switch_frame(RegisterPage))
         self.button1.pack(side="top", pady=(40, 5))
 
-        self.button2 = tk.Button(self, bg="white", font=self.master.btn_font, text="Log in", width=30,
+        self.button2 = tk.Button(self, bg="white", font=self.master.btn_font, text=self._("Log in"), width=30,
                                  command=lambda: self.master.switch_frame(LoginPage))
         self.button2.pack(side="top")
 
     def _create_image(self) -> None:
-        """The method of drawing the image for the authorization page."""
+        """Draw the image for the authorization page."""
         canvas = tk.Canvas(self, bg="white", height=400, width=400)
         canvas.create_image(25, 25, anchor="nw", image=self.master.tictactoe_image)
         canvas.pack(side="top")
 
     def change_language(self, lang: str) -> None:
         """
-        Method with action for the language change button.
+        Set action for the language change button.
 
         :param lang: A string with the localization language of the application, "en" or "ru"
         :type lang: class: `str`
@@ -79,14 +84,14 @@ class AuthStartPage(tk.Frame):
 
 class RegisterPage(tk.Frame):
     """
-        The class of the registration page.
+    The class of the registration page.
 
-        :param master: An instance of the main class of the game application
-        :type master: class: `tictactoe.App`
-        """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__(master)
 
         self.configure(height=280, width=800)
@@ -108,13 +113,13 @@ class RegisterPage(tk.Frame):
 
     def toggle_password_visibility(self, passwd_entry: tk.Entry, button: tk.Button) -> None:
         """
-               Method with action for the button "Show/Hide password".
+        Set action for the button "Show/Hide password".
 
-               :param passwd_entry: An object with a password entry field
-               :type passwd_entry: class: `tkinter.Entry`
-               :param button: Object with a button "Show/Hide password"
-               :type button: class: `tkinter.Button`
-               """
+        :param passwd_entry: An object with a password entry field
+        :type passwd_entry: class: `tkinter.Entry`
+        :param button: Object with a button "Show/Hide password"
+        :type button: class: `tkinter.Button`
+        """
         self.master.click_music.play()
         current_value = passwd_entry["show"]
         if current_value == "*":
@@ -126,24 +131,24 @@ class RegisterPage(tk.Frame):
 
     def register(self, username: str, password: str, label: tk.Label, frame: tk.Frame) -> None:
         """
-                Method with action for the "Register" button.
+        Set action for the "Register" button.
 
-                :param username: The name of the user you want to register under
-                :type username: class: `str`
-                :param password: The password you want to set for username
-                :type password: class: `str`
-                :param label: A label with an information message
-                :type label: class: `tkinter.Label`
-                :param frame: The frame in which the "Register" button will be drawn
-                :type frame: class: `tkinter.Frame`
-                """
+        :param username: The name of the user you want to register under
+        :type username: class: `str`
+        :param password: The password you want to set for username
+        :type password: class: `str`
+        :param label: A label with an information message
+        :type label: class: `tkinter.Label`
+        :param frame: The frame in which the "Register" button will be drawn
+        :type frame: class: `tkinter.Frame`
+        """
         if username == '' or password == '':
             self.master.click_music.play()
             label.config(text=self._('Username and password can`t be empty'))
             frame.after(1000, lambda: label.config(text=""))
             return
 
-        url = 'http://localhost:5000/register'
+        url = 'https://tictactoegame.serveo.net/register'
         headers = {'Content-Type': 'application/json'}
         data = {'username': username, 'password': password}
         response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -155,7 +160,7 @@ class RegisterPage(tk.Frame):
             self.master.switch_frame(AuthStartPage)
 
     def _create_widgets(self) -> None:
-        """The method of rendering widgets of the registration page."""
+        """Render widgets of the registration page."""
         frame0 = tk.Frame(self)
         frame0.pack(side="top", pady=(15, 10))
 
@@ -207,7 +212,7 @@ class RegisterPage(tk.Frame):
 
     def change_language(self, lang: str) -> None:
         """
-        Method with action for the language change button.
+        Set action for the language change button.
 
         :param lang: A string with the localization language of the application, "en" or "ru"
         :type lang: class: `str`
@@ -224,16 +229,17 @@ class RegisterPage(tk.Frame):
         self.register_button.config(text=self._("Register"))
         self.button1.config(text=self._("Return to authorization page"))
 
+
 class LoginPage(tk.Frame):
     """
-       The class of the login page.
+    The class of the login page.
 
-       :param master: An instance of the main class of the game application
-       :type master: class: `tictactoe.App`
-       """
+    :param master: An instance of the main class of the game application
+    :type master: class: `tictactoe.App`
+    """
 
     def __init__(self, master) -> None:
-        """Constructor method."""
+        """Make constructor method."""
         super().__init__(master)
 
         self.configure(height=300, width=800)
@@ -256,13 +262,13 @@ class LoginPage(tk.Frame):
 
     def toggle_password_visibility(self, passwd_entry: tk.Entry, button: tk.Button) -> None:
         """
-               Method with action for the button "Show/Hide password".
+        Set action for the button "Show/Hide password".
 
-               :param passwd_entry: An object with a password entry field
-               :type passwd_entry: class: `tkinter.Entry`
-               :param button: Object with a button "Show/Hide password"
-               :type button: class: `tkinter.Button`
-               """
+        :param passwd_entry: An object with a password entry field
+        :type passwd_entry: class: `tkinter.Entry`
+        :param button: Object with a button "Show/Hide password"
+        :type button: class: `tkinter.Button`
+        """
         self.master.click_music.play()
         current_value = passwd_entry["show"]
         if current_value == "*":
@@ -275,26 +281,26 @@ class LoginPage(tk.Frame):
     def login(self, username: str, password: str, remember_me: tk.BooleanVar, label: tk.Label,
               frame: tk.Frame) -> None:
         """
-               Method with action for the "Log in" button.
+        Set action for the "Log in" button.
 
-               :param username: The name of the user you want to log in under
-               :type username: class: `str`
-               :param password: The password for username
-               :type password: class: `str`
-               :param remember_me: The meaning of the "Remember me" flag
-               :type remember_me: class: `tkinter.BooleanVar`
-               :param label: A label with an information message
-               :type label: class: `tkinter.Label`
-               :param frame: The frame in which the "Log in" button will be drawn
-               :type frame: class: `tkinter.Frame`
-               """
+        :param username: The name of the user you want to log in under
+        :type username: class: `str`
+        :param password: The password for username
+        :type password: class: `str`
+        :param remember_me: The meaning of the "Remember me" flag
+        :type remember_me: class: `tkinter.BooleanVar`
+        :param label: A label with an information message
+        :type label: class: `tkinter.Label`
+        :param frame: The frame in which the "Log in" button will be drawn
+        :type frame: class: `tkinter.Frame`
+        """
         if username == '' or password == '':
             self.master.click_music.play()
             label.config(text=self._('Username and password can`t be empty'))
             frame.after(1000, lambda: label.config(text=""))
             return
 
-        url = 'http://localhost:5000/login'
+        url = 'https://tictactoegame.serveo.net/login'
         headers = {'Content-Type': 'application/json'}
         data = {'username': username, 'password': password}
         response = requests.post(url, headers=headers, data=json.dumps(data))
@@ -326,7 +332,7 @@ class LoginPage(tk.Frame):
             self.master.switch_frame(stp.StartPage)
 
     def _create_widgets(self) -> None:
-        """The method of rendering widgets of the login page."""
+        """Render widgets of the login page."""
         frame0 = tk.Frame(self)
         frame0.pack(side="top", pady=(15, 10))
 
@@ -385,7 +391,7 @@ class LoginPage(tk.Frame):
 
     def change_language(self, lang: str) -> None:
         """
-        Method with action for the language change button.
+        Set action for the language change button.
 
         :param lang: A string with the localization language of the application, "en" or "ru"
         :type lang: class: `str`

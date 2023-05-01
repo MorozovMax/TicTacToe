@@ -1,0 +1,275 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-05-01 09:44+0300\n"
+"PO-Revision-Date: 2023-04-13 01:36+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: OnlineTicTacToe/authentification_page.py:48
+#: OnlineTicTacToe/authentification_page.py:80
+msgid "Welcome to the \"Tic-Tac-Toe\" game!"
+msgstr "Добро пожаловать в игру \"Крестики-Нолики\"!"
+
+#: OnlineTicTacToe/authentification_page.py:53
+#: OnlineTicTacToe/authentification_page.py:81
+#: OnlineTicTacToe/authentification_page.py:202
+#: OnlineTicTacToe/authentification_page.py:229
+msgid "Register"
+msgstr "Регистрация"
+
+#: OnlineTicTacToe/authentification_page.py:57
+#: OnlineTicTacToe/authentification_page.py:82
+#: OnlineTicTacToe/authentification_page.py:382
+#: OnlineTicTacToe/authentification_page.py:408
+msgid "Log in"
+msgstr "Вход"
+
+#: OnlineTicTacToe/authentification_page.py:79
+#: OnlineTicTacToe/authentification_page.py:225
+#: OnlineTicTacToe/authentification_page.py:404
+#: OnlineTicTacToe/game_page.py:435 OnlineTicTacToe/game_page.py:879
+#: OnlineTicTacToe/search_game_page.py:209 OnlineTicTacToe/setting_page.py:258
+#: OnlineTicTacToe/setting_page.py:362 OnlineTicTacToe/start_page.py:95
+#: OnlineTicTacToe/tictactoe.py:42
+msgid "Tic-Tac-Toe"
+msgstr "Крестики-Нолики"
+
+#: OnlineTicTacToe/authentification_page.py:147
+#: OnlineTicTacToe/authentification_page.py:299
+msgid "Username and password can`t be empty"
+msgstr "Никнейм и пароль не могут быть пустыми"
+
+#: OnlineTicTacToe/authentification_page.py:157
+#, python-brace-format
+msgid "Username \"{username}\" already exists"
+msgstr "Никнейм \"{username}\" уже занят"
+
+#: OnlineTicTacToe/authentification_page.py:167
+#: OnlineTicTacToe/authentification_page.py:226
+msgid "Register page"
+msgstr "Страница регистрации"
+
+#: OnlineTicTacToe/authentification_page.py:173
+#: OnlineTicTacToe/authentification_page.py:227
+#: OnlineTicTacToe/authentification_page.py:345
+#: OnlineTicTacToe/authentification_page.py:406
+msgid "Username"
+msgstr "Никнейм"
+
+#: OnlineTicTacToe/authentification_page.py:182
+#: OnlineTicTacToe/authentification_page.py:228
+#: OnlineTicTacToe/authentification_page.py:354
+#: OnlineTicTacToe/authentification_page.py:407
+msgid "Password"
+msgstr "Пароль"
+
+#: OnlineTicTacToe/authentification_page.py:209
+#: OnlineTicTacToe/authentification_page.py:230
+#: OnlineTicTacToe/authentification_page.py:388
+#: OnlineTicTacToe/authentification_page.py:410
+msgid "Return to authorization page"
+msgstr "Вернуться на страницу авторизации"
+
+#: OnlineTicTacToe/authentification_page.py:310
+msgid "Invalid username or password"
+msgstr "Неверный никнейм или пароль"
+
+#: OnlineTicTacToe/authentification_page.py:314
+msgid "{username} already logged in"
+msgstr "{username} уже вошёл"
+
+#: OnlineTicTacToe/authentification_page.py:339
+#: OnlineTicTacToe/authentification_page.py:405
+msgid "Log in page"
+msgstr "Страница входа"
+
+#: OnlineTicTacToe/authentification_page.py:369
+#: OnlineTicTacToe/authentification_page.py:409
+msgid "Remember Me"
+msgstr "Запомнить"
+
+#: OnlineTicTacToe/game_page.py:47 OnlineTicTacToe/game_page.py:458
+msgid "Waiting for the opponent"
+msgstr "Ожидание оппонента"
+
+#: OnlineTicTacToe/game_page.py:107 OnlineTicTacToe/game_page.py:175
+#: OnlineTicTacToe/game_page.py:454
+msgid "Now your turn"
+msgstr "Сейчас ваш ход"
+
+#: OnlineTicTacToe/game_page.py:113 OnlineTicTacToe/game_page.py:332
+#: OnlineTicTacToe/game_page.py:456
+msgid "Waiting for the opponent turn"
+msgstr "Ожидание хода оппонента"
+
+#: OnlineTicTacToe/game_page.py:134 OnlineTicTacToe/game_page.py:251
+#: OnlineTicTacToe/game_page.py:443 OnlineTicTacToe/game_page.py:747
+#: OnlineTicTacToe/game_page.py:887
+msgid "It is a draw"
+msgstr "Ничья"
+
+#: OnlineTicTacToe/game_page.py:150 OnlineTicTacToe/game_page.py:241
+#: OnlineTicTacToe/game_page.py:448 OnlineTicTacToe/game_page.py:450
+#: OnlineTicTacToe/game_page.py:736 OnlineTicTacToe/game_page.py:738
+#: OnlineTicTacToe/game_page.py:890 OnlineTicTacToe/game_page.py:892
+#, python-brace-format
+msgid "{player} win"
+msgstr "{player} выиграл"
+
+#: OnlineTicTacToe/game_page.py:186 OnlineTicTacToe/game_page.py:445
+#, python-brace-format
+msgid "{player} reset the game"
+msgstr "{player} отменил игру"
+
+#: OnlineTicTacToe/game_page.py:324 OnlineTicTacToe/game_page.py:439
+msgid "Return to online game page"
+msgstr "Вернуться на страницу онлайн игры"
+
+#: OnlineTicTacToe/game_page.py:410 OnlineTicTacToe/game_page.py:437
+msgid "Reset game"
+msgstr "Отменить игру"
+
+#: OnlineTicTacToe/game_page.py:485 OnlineTicTacToe/game_page.py:882
+msgid "Press \"Start\" button to start the game"
+msgstr "Нажмите кпопку \"Начать\""
+
+#: OnlineTicTacToe/game_page.py:572 OnlineTicTacToe/game_page.py:881
+msgid "Start"
+msgstr "Начать"
+
+#: OnlineTicTacToe/game_page.py:624 OnlineTicTacToe/game_page.py:884
+msgid "Return to configure page"
+msgstr "Вернуться на страницу настроек"
+
+#: OnlineTicTacToe/game_page.py:642 OnlineTicTacToe/game_page.py:894
+msgid "The game has started"
+msgstr "Игра началась"
+
+#: OnlineTicTacToe/search_game_page.py:161
+msgid "The game is ready"
+msgstr "Игра найдена"
+
+#: OnlineTicTacToe/search_game_page.py:177
+#: OnlineTicTacToe/search_game_page.py:210
+msgid "The game is being searched for"
+msgstr "Поиск игры"
+
+#: OnlineTicTacToe/search_game_page.py:193
+#: OnlineTicTacToe/search_game_page.py:211
+msgid "Reset search"
+msgstr "Отменить поиск"
+
+#: OnlineTicTacToe/setting_page.py:77 OnlineTicTacToe/setting_page.py:273
+#: OnlineTicTacToe/setting_page.py:377
+msgid " Choosing a move "
+msgstr " Выбор хода "
+
+#: OnlineTicTacToe/setting_page.py:86 OnlineTicTacToe/setting_page.py:117
+#: OnlineTicTacToe/setting_page.py:274 OnlineTicTacToe/setting_page.py:278
+#: OnlineTicTacToe/setting_page.py:378 OnlineTicTacToe/setting_page.py:382
+msgid "Randomly"
+msgstr "Случайно"
+
+#: OnlineTicTacToe/setting_page.py:91 OnlineTicTacToe/setting_page.py:275
+#: OnlineTicTacToe/setting_page.py:379
+msgid "First"
+msgstr "Первым"
+
+#: OnlineTicTacToe/setting_page.py:96 OnlineTicTacToe/setting_page.py:276
+#: OnlineTicTacToe/setting_page.py:380
+msgid "Second"
+msgstr "Вторым"
+
+#: OnlineTicTacToe/setting_page.py:108 OnlineTicTacToe/setting_page.py:277
+#: OnlineTicTacToe/setting_page.py:381
+msgid " Sign selection "
+msgstr " Выбор символа "
+
+#: OnlineTicTacToe/setting_page.py:122 OnlineTicTacToe/setting_page.py:279
+#: OnlineTicTacToe/setting_page.py:383
+msgid "Your sign - \"X\""
+msgstr "Ваш символ - \"Х\""
+
+#: OnlineTicTacToe/setting_page.py:127 OnlineTicTacToe/setting_page.py:280
+#: OnlineTicTacToe/setting_page.py:384
+msgid "Your sign - \"O\""
+msgstr "Ваш символ - \"О\""
+
+#: OnlineTicTacToe/setting_page.py:184 OnlineTicTacToe/setting_page.py:259
+#: OnlineTicTacToe/start_page.py:54 OnlineTicTacToe/start_page.py:97
+msgid "Online game"
+msgstr "Онлайн игра"
+
+#: OnlineTicTacToe/setting_page.py:202 OnlineTicTacToe/setting_page.py:260
+#: OnlineTicTacToe/setting_page.py:307 OnlineTicTacToe/setting_page.py:364
+msgid " Game statistic "
+msgstr " Игровая статистика "
+
+#: OnlineTicTacToe/setting_page.py:205 OnlineTicTacToe/setting_page.py:261
+#: OnlineTicTacToe/setting_page.py:310 OnlineTicTacToe/setting_page.py:365
+#, python-brace-format
+msgid "Number of played games - {}"
+msgstr "Количество сыгранных игр - {}"
+
+#: OnlineTicTacToe/setting_page.py:215 OnlineTicTacToe/setting_page.py:267
+#: OnlineTicTacToe/setting_page.py:320 OnlineTicTacToe/setting_page.py:371
+#, python-brace-format
+msgid "Number of user wins - {}"
+msgstr "Количество побед - {}"
+
+#: OnlineTicTacToe/setting_page.py:221 OnlineTicTacToe/setting_page.py:268
+#: OnlineTicTacToe/setting_page.py:325 OnlineTicTacToe/setting_page.py:373
+#, python-brace-format
+msgid "Number of user defeats - {}"
+msgstr "Количество поражений - {}"
+
+#: OnlineTicTacToe/setting_page.py:227 OnlineTicTacToe/setting_page.py:270
+#: OnlineTicTacToe/setting_page.py:331 OnlineTicTacToe/setting_page.py:374
+#, python-brace-format
+msgid "Number of draws - {}"
+msgstr "Количество ничьих - {}"
+
+#: OnlineTicTacToe/setting_page.py:238 OnlineTicTacToe/setting_page.py:271
+msgid "Search the game"
+msgstr "Найти игру"
+
+#: OnlineTicTacToe/setting_page.py:242 OnlineTicTacToe/setting_page.py:272
+#: OnlineTicTacToe/setting_page.py:346 OnlineTicTacToe/setting_page.py:376
+msgid "Return to start page"
+msgstr "Вернуться на стартовую страницу"
+
+#: OnlineTicTacToe/setting_page.py:297 OnlineTicTacToe/setting_page.py:363
+msgid "Game with computer"
+msgstr "Игра с компьютером"
+
+#: OnlineTicTacToe/setting_page.py:342 OnlineTicTacToe/setting_page.py:375
+msgid "Start the game"
+msgstr "Начать игру"
+
+#: OnlineTicTacToe/start_page.py:49 OnlineTicTacToe/start_page.py:96
+#, python-brace-format
+msgid "Player is {user}"
+msgstr "Игрок - {user}"
+
+#: OnlineTicTacToe/start_page.py:58 OnlineTicTacToe/start_page.py:98
+msgid "Play with the computer"
+msgstr "Играть с компьютером"
+
+#: OnlineTicTacToe/start_page.py:62 OnlineTicTacToe/start_page.py:99
+msgid "Log Out"
+msgstr "Выход"
+

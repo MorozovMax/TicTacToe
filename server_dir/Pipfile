@@ -4,30 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pygame = "*"
-Pillow = "*"
-python-socketio = "*"
-requests = "*"
-
-[dev-packages]
-flake8 = "*"
-pydocstyle = "*"
-pylint = "*"
-doit = "*"
-Sphinx = "*"
-Babel = "*"
-build = "*"
-setuptools = "*"
 PyJWT = "*"
 Flask = "*"
 Flask-SocketIO = "*"
 Flask-SQLAlchemy = "*"
-tomli = "*"
-pyinstaller = "*"
 gunicorn = "*"
 gevent = "*"
 websocket-client = "*"
 gevent-websocket = "*"
+
+[dev-packages]
 
 [requires]
 python_version = "3.10"

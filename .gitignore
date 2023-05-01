@@ -1,0 +1,12 @@
+requirements.txt
+*.pot
+*.mo
+build
+__pycache__
+dist
+*.egg-info
+database
+TicTacToe
+.doit*
+OnlineTicTacToe/locale
+myappenv

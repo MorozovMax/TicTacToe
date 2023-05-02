@@ -9,10 +9,10 @@ import os
 import sys
 
 
+sys.path.insert(0, os.path.abspath('../'))
 sys.path.insert(0, os.path.abspath('../OnlineTicTacToe'))
 sys.path.insert(0, os.path.abspath('../server_dir'))
 sys.path.insert(0, os.path.abspath('../setup'))
-sys.path.insert(0, os.path.abspath('../'))
 
 project = 'Online TicTacToe'
 copyright = '2023, Pavlishin Kirill, Morozov Maksim'
@@ -32,7 +32,7 @@ autodoc_default_options = {
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-language = 'ru'
+language = 'en'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

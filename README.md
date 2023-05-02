@@ -52,8 +52,8 @@ requests, Babel (gettext), Pillow, Sphinx, Gunicorn, Docker, docker-compose, pyi
 setuptools, serveo.net
 <br><br>
 ### Документация:
-Программная:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://example.ru  
-Пользовательская:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://example.ru
+Программная:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://online-tictactoe.readthedocs.io/en/latest/tech_doc.html  
+Пользовательская:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://online-tictactoe.readthedocs.io/en/latest/user_guide.html
 <br><br>
 ### Графический интерфейс:
 <br>

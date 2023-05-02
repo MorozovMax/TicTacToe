@@ -46,8 +46,7 @@ def task_html() -> Dict[str, Any]:
     :rtype: class `Dict[str, Any]`
     """
     return {
-        'actions': [(create_folder, ['server_dir/database']),
-                    'sphinx-build -M html doc build']
+        'actions': ['sphinx-build -M html doc build']
     }
 
 
